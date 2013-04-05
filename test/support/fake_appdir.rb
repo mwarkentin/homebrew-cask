@@ -19,7 +19,7 @@ tell application "Finder"
     delete appfile
   end repeat
 end tell
-    ))
+    ), true)
 end
 end
 
