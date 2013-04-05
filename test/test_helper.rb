@@ -55,7 +55,7 @@ class TestHelper
           get the posix path of ((original item of theItem) as text)
         end if
       end tell
-    ))
+    ), true)
     Pathname(target).exist?
   end
 end
