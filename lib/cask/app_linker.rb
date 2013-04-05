@@ -48,7 +48,7 @@ class Cask
       ))
     end
 
-    def self.osascript(applescript, stderr=false)
+    def self.osascript(applescript, stderr=true)
       command = "osascript -e '#{applescript}'"
       unless stderr
         command << " 2> /dev/null"
