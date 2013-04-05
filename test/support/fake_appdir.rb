@@ -1,26 +1,20 @@
+require 'pp'
+
 # wire in a fake appdir per-test
 module FakeAppdirHooks
   def before_setup
     super
     @canned_appdir = HOMEBREW_REPOSITORY/"Applications-#{Time.now.to_i}"
     @canned_appdir.mkpath
+    puts `ls -ld #{@canned_appdir}`
+    `touch #{@canned_appdir}/i_can_write_here`
     Cask.appdir = @canned_appdir
   end
 
   def after_teardown
     super
+    pp @canned_appdir.entries
     @canned_appdir.rmtree
-#     return if @canned_appdir.entries.grep(/.app$/).empty?
-# 
-#     Cask::AppLinker.osascript(%Q(
-# tell application "Finder"
-#   set appfiles to files in folder (POSIX file "#{@canned_appdir}" as text)
-# 
-#   repeat with appfile in appfiles
-#     delete appfile
-#   end repeat
-# end tell
-#     ))
   end
 end
 
