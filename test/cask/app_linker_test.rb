@@ -13,7 +13,6 @@ describe Cask::AppLinker do
     end
 
     it "works with an application in the root directory" do
-      sleep 3
       Cask::AppLinker.new(@caffeine).link
       TestHelper.valid_alias?(Cask.appdir/'Caffeine.app').must_equal true
     end
@@ -24,7 +23,6 @@ describe Cask::AppLinker do
       FileUtils.mv @app, appsubdir
       appinsubdir = appsubdir/'Caffeine.app'
 
-      sleep 3
       Cask::AppLinker.new(@caffeine).link
 
       TestHelper.valid_alias?(Cask.appdir/'Caffeine.app').must_equal true
@@ -33,7 +31,6 @@ describe Cask::AppLinker do
     it "only uses linkables when they are specified" do
       FileUtils.cp_r @app, @app.sub('Caffeine.app', 'CaffeineAgain.app')
 
-      sleep 3
       Cask::AppLinker.new(@caffeine).link
 
       TestHelper.valid_alias?(Cask.appdir/'Caffeine.app').must_equal true
@@ -43,7 +40,6 @@ describe Cask::AppLinker do
     it "avoids clobbering an existing app by linking over it" do
       (Cask.appdir/'Caffeine.app').mkdir
 
-      sleep 3
       shutup do
         Cask::AppLinker.new(@caffeine).link
       end
