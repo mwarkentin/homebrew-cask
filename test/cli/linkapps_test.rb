@@ -13,6 +13,7 @@ describe Cask::CLI::Linkapps do
   end
 
   it "only links casks mentioned when arguments are provided" do
+    sleep 3
     Cask::CLI::Linkapps.run('local-transmission')
 
     TestHelper.valid_alias?(Cask.appdir/"Transmission.app").must_equal true
@@ -20,6 +21,7 @@ describe Cask::CLI::Linkapps do
   end
 
   it "links all installed casks when no arguments supplied" do
+    sleep 3
     Cask::CLI::Linkapps.run
 
     TestHelper.valid_alias?(Cask.appdir/"Transmission.app").must_equal true
