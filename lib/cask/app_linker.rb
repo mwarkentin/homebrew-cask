@@ -38,30 +38,17 @@ class Cask
       # deleting the file beforehand prevents "Foo.app alias" files
       # getting littered in the destination when linkapps is run more
       # than once; cause idempotency
-      puts "LINKING #{from_file} -> #{to_path}"
-      tries = 0
-      begin 
-        self.class.osascript(%Q(
-          tell application "Finder"
-            if exists POSIX file "#{to_path}" then
-              delete POSIX file "#{to_path}"
-            end if
-          end tell
-          tell application "Finder" to make alias file to POSIX file "#{from_file}" at POSIX file "#{to_dir}"
-        ))
-        raise "didn't take" unless to_path.exist?
-      rescue Exception => e
-        raise unless e.message == "didn't take"
-        unless tries >= 10
-          puts 'retrying...'
-          tries += 1
-          sleep 5
-          retry
-        end
-      end
+      self.class.osascript(%Q(
+        tell application "Finder"
+          if exists POSIX file "#{to_path}" then
+            delete POSIX file "#{to_path}"
+          end if
+        end tell
+        tell application "Finder" to make alias file to POSIX file "#{from_file}" at POSIX file "#{to_dir}"
+      ))
     end
 
-    def self.osascript(applescript, stderr=true)
+    def self.osascript(applescript, stderr=false)
       command = "osascript -e '#{applescript}'"
       unless stderr
         command << " 2> /dev/null"

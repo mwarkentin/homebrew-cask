@@ -48,6 +48,7 @@ class TestHelper
   end
 
   def self.valid_alias?(candidate)
+    return false unless candidate.exist?
     target = Cask::AppLinker.osascript(%Q(
       tell application "Finder"
         set theItem to (POSIX file "#{candidate}") as alias
@@ -55,7 +56,7 @@ class TestHelper
           get the posix path of ((original item of theItem) as text)
         end if
       end tell
-    ), true)
+    ))
     Pathname(target).exist?
   end
 end

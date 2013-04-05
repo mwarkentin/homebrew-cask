@@ -5,6 +5,7 @@ describe Cask::AppLinker do
     before do
       @caffeine = Cask.load('local-caffeine')
       shutup { Cask::Installer.install(@caffeine) }
+      sleep 1
       @app = @caffeine.destination_path/'Caffeine.app'
     end
 
