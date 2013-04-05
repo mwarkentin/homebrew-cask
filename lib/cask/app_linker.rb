@@ -52,10 +52,10 @@ class Cask
         raise "didn't take" unless to_path.exist?
       rescue Exception => e
         raise unless e.message == "didn't take"
-        unless tries >= 3
+        unless tries >= 10
           puts 'retrying...'
           tries += 1
-          sleep 1
+          sleep 5
           retry
         end
       end
