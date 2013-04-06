@@ -48,6 +48,7 @@ class TestHelper
   end
 
   def self.valid_alias?(candidate)
+    candidate = remove_extension_if_necessary(candidate)
     return false unless candidate.exist?
     target = Cask::AppLinker.osascript(%Q(
       tell application "Finder"
@@ -59,7 +60,16 @@ class TestHelper
     ))
     Pathname(target).exist?
   end
+
+  def self.remove_extension_if_necessary(path)
+    all_extensions_shown? ? path : Pathname(path.to_s.sub(/\.app$/, ''))
+  end
+
+  def self.all_extensions_shown?
+    @all_extensions_shown ||= (`defaults read -g AppleShowAllExtensions`.chomp == '1')
+  end
 end
+
 
 require 'support/fake_fetcher'
 require 'support/fake_appdir'

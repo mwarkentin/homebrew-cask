@@ -44,13 +44,12 @@ class Cask
             delete POSIX file "#{to_path}"
           end if
         end tell
-        tell application "Finder" to make alias file to POSIX file "#{from_file}" at POSIX file "#{to_path}"
+        tell application "Finder" to make alias file to POSIX file "#{from_file}" at POSIX file "#{to_dir}"
       ))
     end
 
     def self.osascript(applescript, stderr=false)
       command = "osascript -e '#{applescript}'"
-      puts command
       unless stderr
         command << " 2> /dev/null"
       end
