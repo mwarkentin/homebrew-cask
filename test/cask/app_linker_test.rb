@@ -1,8 +1,6 @@
 require 'test_helper'
 
 describe Cask::AppLinker do
-  i_suck_and_my_tests_are_order_dependent!
-
   describe 'linkapps' do
     describe 'with caffeine' do
       before do
