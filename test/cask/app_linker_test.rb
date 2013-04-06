@@ -43,7 +43,9 @@ describe Cask::AppLinker do
       it "avoids clobbering an existing app by linking over it" do
         (Cask.appdir/'Caffeine.app').mkpath
 
-        Cask::AppLinker.new(@caffeine).link
+        shutup do
+          Cask::AppLinker.new(@caffeine).link
+        end
 
         (Cask.appdir/'Caffeine.app').directory?.must_equal true
       end

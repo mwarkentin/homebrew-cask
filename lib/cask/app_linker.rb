@@ -27,11 +27,11 @@ class Cask
 
     def link_app(app)
       app_path = Cask.appdir.join(app.basename)
-      # if app_path.directory?
-      #   ohai "It seems there is already an app at #{app_path}; not linking."
-      #   return
-      # end
-      `ln -fs #{app} #{app_path}`
+      if app_path.directory?
+        ohai "It seems there is already an app at #{app_path}; not linking."
+        return
+      end
+      `ln -s #{app} #{app_path}`
     end
   end
 end
