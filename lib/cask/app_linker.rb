@@ -67,7 +67,7 @@ class Cask
         raise unless tries > 0
         tries -= 1
         opoo "alias creation failed for #{e.message} retrying" unless ENV['QUIET_TESTS']
-        sleep 0.5
+        sleep 1 
         retry
       end
     end
