@@ -1,7 +1,4 @@
 language: objective-c
-before_install:
-  - brew update
-  - which ruby
-  - ruby -v
+before_install: brew update
 install: bundle
 script: bundle exec rake test
