@@ -66,7 +66,7 @@ class TestHelper
   end
 
   def self.all_extensions_shown?
-    @all_extensions_shown ||= (`defaults read -g AppleShowAllExtensions`.chomp == '1')
+    @all_extensions_shown ||= (`defaults read -g AppleShowAllExtensions 2>/dev/null`.chomp == '1')
   end
 end
 
