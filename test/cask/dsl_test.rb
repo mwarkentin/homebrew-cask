@@ -42,7 +42,6 @@ describe Cask::DSL do
     end
 
     instance = CaskWithLinkables.new
-    instance.specifies_linkables?(:app).must_equal true
     instance.linkables[:app].must_equal %w[Foo.app Bar.app]
   end
 end

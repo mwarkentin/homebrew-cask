@@ -84,6 +84,14 @@ class Cask
     destination_path.exist?
   end
 
+  def linkable_apps
+    if linkables.has_key? :app
+      linkables[:app].map { |app| Pathname.glob("#{destination_path}/**/#{app}").first }
+    else
+      Pathname.glob("#{destination_path}/**/*.app")
+    end
+  end
+
   def to_s
     @title
   end

@@ -15,10 +15,6 @@ module Cask::DSL
 
   def linkables; self.class.linkables || {}; end
 
-  def specifies_linkables?(type)
-    self.class.linkables.has_key?(type)
-  end
-
   module ClassMethods
     def content_length(content_length=nil)
       # deprecated, but retained for backwards compatibility

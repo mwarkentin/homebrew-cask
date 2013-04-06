@@ -28,6 +28,9 @@ require 'cask'
 # look for casks in testcasks by default
 Cask.default_tap = 'phinze-testcasks'
 
+# silence some extraneous UI messages for tests
+ENV['QUIET_TESTS'] = '1'
+
 class TestHelper
   # helper for test casks to reference local files easily
   def self.local_binary(name)
@@ -48,7 +51,7 @@ class TestHelper
   end
 
   def self.valid_alias?(candidate)
-    candidate = remove_extension_if_necessary(candidate)
+    candidate = Cask::AppLinker.remove_extension_if_necessary(candidate)
     return false unless candidate.exist?
     target = Cask::AppLinker.osascript(%Q(
       tell application "Finder"
@@ -61,13 +64,6 @@ class TestHelper
     Pathname(target).exist?
   end
 
-  def self.remove_extension_if_necessary(path)
-    all_extensions_shown? ? path : Pathname(path.to_s.sub(/\.app$/, ''))
-  end
-
-  def self.all_extensions_shown?
-    @all_extensions_shown ||= (`defaults read -g AppleShowAllExtensions 2>/dev/null`.chomp == '1')
-  end
 end
 
 

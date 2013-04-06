@@ -4,7 +4,7 @@ require 'pp'
 module FakeAppdirHooks
   def before_setup
     super
-    @canned_appdir = HOMEBREW_REPOSITORY/"Applications-#{Time.now.to_i}"
+    @canned_appdir = HOMEBREW_REPOSITORY/"Applications-#{Time.now.to_i}-#{rand(1024)}"
     @canned_appdir.mkpath
     Cask.appdir = @canned_appdir
   end
