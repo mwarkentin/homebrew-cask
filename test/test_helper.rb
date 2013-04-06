@@ -51,19 +51,9 @@ class TestHelper
   end
 
   def self.valid_alias?(candidate)
-    candidate = Cask::AppLinker.remove_extension_if_necessary(candidate)
-    return false unless candidate.exist?
-    target = Cask::AppLinker.osascript(%Q(
-      tell application "Finder"
-        set theItem to (POSIX file "#{candidate}") as alias
-        if the kind of theItem is "alias" then
-          get the posix path of ((original item of theItem) as text)
-        end if
-      end tell
-    ))
-    Pathname(target).exist?
+    return false unless candidate.symlink?
+    candidate.readlink.exist?
   end
-
 end
 
 
