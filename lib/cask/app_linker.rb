@@ -50,6 +50,7 @@ class Cask
 
     def self.osascript(applescript, stderr=false)
       command = "osascript -e '#{applescript}'"
+      puts command
       unless stderr
         command << " 2> /dev/null"
       end
