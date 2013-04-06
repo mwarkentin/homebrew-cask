@@ -44,7 +44,7 @@ class Cask
             delete POSIX file "#{to_path}"
           end if
         end tell
-        tell application "Finder" to make alias file to POSIX file "#{from_file}" at POSIX file "#{to_dir}"
+        tell application "Finder" to make alias file to POSIX file "#{from_file}" at POSIX file "#{to_path}"
       ))
     end
 
