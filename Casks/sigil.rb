@@ -1,6 +1,7 @@
 class Sigil < Cask
-  url 'http://sigil.googlecode.com/files/Sigil-0.6.2-Mac-Package.dmg'
+  url 'https://sigil.googlecode.com/files/Sigil-0.7.4-Mac-Package.dmg'
   homepage 'http://code.google.com/p/sigil/'
-  version '0.6.2'
-  sha1 '4fe9d60e6a5f2809f2311494e906c72d6fef0755'
+  version '0.7.4'
+  sha1 '7e59f8a4d31a4b444c9d4f3baf859799cb2e351e'
+  link 'Sigil.app'
 end

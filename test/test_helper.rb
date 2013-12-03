@@ -1,3 +1,4 @@
+require 'bundler'
 require 'bundler/setup'
 
 
@@ -22,6 +23,11 @@ HOMEBREW_CACHE.mkpath
 require 'minitest/autorun'
 require 'minitest-colorize'
 
+# Force mocha to patch MiniTest since we have both loaded thanks to homebrew's testing_env
+require 'mocha/api'
+require 'mocha/integration/mini_test'
+Mocha::Integration::MiniTest.activate
+
 # our baby
 require 'cask'
 
@@ -30,9 +36,6 @@ Cask.default_tap = 'phinze-testcasks'
 
 # our own testy caskroom
 Cask.caskroom = HOMEBREW_PREFIX.join('TestCaskroom')
-
-# silence some extraneous UI messages for tests
-ENV['QUIET_TESTS'] = '1'
 
 class TestHelper
   # helper for test casks to reference local files easily
@@ -58,17 +61,33 @@ class TestHelper
       lambda.call
     end
 
-    (out+err).chomp.must_equal expected.gsub(/^ */, '')
+    if expected.is_a? Regexp
+      (out+err).chomp.must_match expected
+    else
+      (out+err).chomp.must_equal expected.gsub(/^ */, '')
+    end
   end
 
   def self.valid_alias?(candidate)
     return false unless candidate.symlink?
     candidate.readlink.exist?
   end
+
+  def self.install_without_artifacts(cask)
+    Cask::Installer.new(cask).tap do |i|
+      shutup { i.download }
+      i.extract_primary_container
+    end
+  end
 end
 
 require 'support/fake_fetcher'
-require 'support/fake_appdir'
+require 'support/fake_dirs'
+require 'support/fake_system_command'
+require 'support/cleanup'
+require 'support/never_sudo_system_command'
+require 'tmpdir'
+require 'tempfile'
 
 # pretend like we installed the cask tap
 project_root = Pathname.new(File.expand_path("#{File.dirname(__FILE__)}/../"))

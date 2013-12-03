@@ -3,4 +3,5 @@ class Bettertouchtool < Cask
   homepage 'http://blog.boastr.net/'
   version 'latest'
   no_checksum
+  link 'BetterTouchTool.app'
 end

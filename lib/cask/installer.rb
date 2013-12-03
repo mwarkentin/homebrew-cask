@@ -1,106 +1,74 @@
 require 'digest'
 
 class Cask::Installer
-  class << self
-    def install(cask)
-      require 'formula_support'
-      software_spec = SoftwareSpec.new(cask.url.to_s, cask.version)
-      downloader = CurlDownloadStrategy.new(cask.title, software_spec)
-      downloaded_path = downloader.fetch
+  def initialize(cask, command=Cask::SystemCommand)
+    @cask = cask
+    @command = command
+  end
 
-      _check_sums(downloaded_path, cask.sums) unless cask.sums === 0
-
-      FileUtils.mkdir_p cask.destination_path
-
-      _with_extracted_mountpoints(downloaded_path) do |mountpoint|
-        `ditto '#{mountpoint}' '#{cask.destination_path}' 2>/dev/null`
-      end
-
-      ohai "Success! #{cask} installed to #{cask.destination_path}"
+  def install(force=false)
+    if @cask.installed? && !force
+      raise CaskAlreadyInstalledError.new(@cask)
     end
 
-    def uninstall(cask)
-      raise CaskNotInstalledError.new(cask) unless cask.installed?
+    print_caveats
 
-      cask.destination_path.rmtree
+    begin
+      download
+      extract_primary_container
+      install_artifacts
+    rescue
+      purge_files
+      raise
     end
 
-    def _check_sums(path, sums)
-      has_sum = false
-      sums.each do |sum|
-        unless sum.empty?
-          computed = Checksum.new(sum.hash_type, Digest.const_get(sum.hash_type.to_s.upcase).file(path).hexdigest)
-          raise ChecksumMismatchError.new(sum, computed) unless sum == computed
-          has_sum = true
-        end
-      end
-      raise ChecksumMissingError.new("Checksum required. SHA1: '#{Digest::SHA1.file(path).hexdigest}'") unless has_sum
-    end
+    ohai "Success! #{@cask} installed to #{@cask.destination_path}"
+  end
 
-    def _with_extracted_mountpoints(path)
-      if _dmg?(path)
-        File.open(path) do |dmg|
-          xml_str = `hdiutil mount -plist -nobrowse -readonly -noidme -mountrandom /tmp '#{dmg.path}'`
-          hdiutil_info = Plist::parse_xml(xml_str)
-          raise Exception.new("No disk entities returned by mount at #{dmg.path}") unless hdiutil_info.has_key?("system-entities")
-          mounts = hdiutil_info["system-entities"].collect { |entity|
-            entity["mount-point"]
-          }.compact
-          begin
-            mounts.each do |mountpoint|
-              yield Pathname.new(mountpoint)
-            end
-          ensure
-            mounts.each do |mountpoint|
-              `hdiutil eject '#{mountpoint}'`
-            end
-          end
-        end
-      elsif _zip?(path)
-        destdir = "/tmp/brewcask_#{@title}_extracted"
-        `mkdir -p '#{destdir}'`
-        `unzip -d '#{destdir}' '#{path}'`
-        begin
-          yield destdir
-        ensure
-          `rm -rf '#{destdir}'`
-        end
-      elsif _tar?(path)
-        destdir = "/tmp/brewcask_#{@title}_extracted"
-        `mkdir -p '#{destdir}'`
-        `tar jxf '#{path}' -C '#{destdir}'`
-        begin
-          yield destdir
-        ensure
-          `rm -rf '#{destdir}'`
-        end
-      else
-        raise "uh oh, could not identify type of #{path}"
-      end
-    end
 
-    def _dmg?(path)
-      output = `hdiutil imageinfo '#{path}' 2>/dev/null`
-      output != ''
-    end
+  def download
+    download = Cask::Download.new(@cask)
+    @downloaded_path = download.perform
+  end
 
-    def _zip?(path)
-      output = `file -Izb '#{path}'`
-      output.chomp.include? 'compressed-encoding=application/zip; charset=binary; charset=binary'
+  def extract_primary_container
+    FileUtils.mkdir_p @cask.destination_path
+    container = Cask::Container.for_path(@downloaded_path, @command)
+    unless container
+      raise "uh oh, could not identify primary container for #{@downloaded_path}"
     end
+    container.new(@cask, @downloaded_path, @command).extract
+  end
 
-    def _tar?(path)
-      _tar_bzip?(path) || _tar_gzip?(path)
+  def install_artifacts
+    artifacts = Cask::Artifact.for_cask(@cask)
+    artifacts.each do |artifact|
+      artifact.new(@cask, @command).install
     end
+  end
 
-    def _tar_bzip?(path)
-      output = `file -Izb '#{path}'`
-      output.chomp == 'application/x-tar; charset=binary compressed-encoding=application/x-bzip2; charset=binary; charset=binary'
+  def print_caveats
+    unless @cask.caveats.empty?
+      ohai 'Caveats', @cask.caveats
     end
+  end
 
-    def _tar_gzip?(path)
-      output = `file -Izb '#{path}'`
-      output.chomp == 'application/x-tar; charset=binary compressed-encoding=application/x-gzip; charset=binary; charset=binary'
+  def uninstall
+    uninstall_artifacts
+    purge_files
+  end
+
+  def uninstall_artifacts
+    artifacts = Cask::Artifact.for_cask(@cask)
+    artifacts.each do |artifact|
+      artifact.new(@cask, @command).uninstall
     end
+  end
+
+  def purge_files
+    if @cask.destination_path.exist?
+      @cask.destination_path.rmtree
+    end
+    @cask.caskroom_path.rmdir_if_possible
   end
 end

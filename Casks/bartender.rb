@@ -3,4 +3,5 @@ class Bartender < Cask
   homepage 'http://www.macbartender.com/'
   version 'latest'
   no_checksum
+  link 'Bartender.app'
 end

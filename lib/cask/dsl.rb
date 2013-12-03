@@ -1,4 +1,4 @@
-require 'formula_support'
+require 'checksum'
 require 'set'
 
 module Cask::DSL
@@ -14,7 +14,9 @@ module Cask::DSL
 
   def sums; self.class.sums || []; end
 
-  def linkables; self.class.linkables || {}; end
+  def artifacts; self.class.artifacts; end
+
+  def caveats; ''; end
 
   module ClassMethods
     def homepage(homepage=nil)
@@ -22,19 +24,30 @@ module Cask::DSL
     end
 
     def url(url=nil)
-      @url ||= (url && URI.parse(url))
+      @url ||= Cask::UnderscoreSupportingURI.parse(url)
     end
 
     def version(version=nil)
       @version ||= version
     end
 
-    def linkables
-      @linkables ||= Hash.new(Set.new)
+    def artifacts
+      @artifacts ||= Hash.new { |hash, key| hash[key] = Set.new }
     end
 
-    def link(type, *files)
-      linkables[type] += files
+    ARTIFACT_TYPES = [
+      :install,
+      :link,
+      :nested_container,
+      :prefpane,
+      :qlplugin,
+      :uninstall,
+    ]
+
+    ARTIFACT_TYPES.each do |type|
+      define_method(type) do |*args|
+        artifacts[type].merge(args)
+      end
     end
 
     attr_reader :sums

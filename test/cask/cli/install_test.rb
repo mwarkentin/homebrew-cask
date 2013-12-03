@@ -1,0 +1,50 @@
+require 'test_helper'
+
+describe Cask::CLI::Install do
+  it "allows install and link of multiple casks at once" do
+    shutup do
+      Cask::CLI::Install.run('local-transmission', 'local-caffeine')
+    end
+
+    Cask.load('local-transmission').must_be :installed?
+    Cask.appdir.join('Transmission.app').must_be :symlink?
+    Cask.load('local-caffeine').must_be :installed?
+    Cask.appdir.join('Caffeine.app').must_be :symlink?
+  end
+
+  it "prevents double install (without nuking existing installation)" do
+    shutup do
+      Cask::CLI::Install.run('local-transmission')
+    end
+
+    e = lambda {
+      Cask::CLI::Install.run('local-transmission')
+    }.must_raise CaskAlreadyInstalledError
+
+    e.message.must_equal 'Cask for local-transmission is already installed. Use `--force` to install anyways.'
+
+    Cask.load('local-transmission').must_be :installed?
+  end
+
+  it "allows double install with --force" do
+    shutup do
+      Cask::CLI::Install.run('local-transmission')
+    end
+
+    TestHelper.must_output(self, lambda {
+      Cask::CLI::Install.run('local-transmission', '--force')
+    }, /Success! local-transmission installed/)
+  end
+
+  it "properly handles casks that are not present" do
+    lambda {
+      Cask::CLI::Install.run('notacask')
+    }.must_raise CaskUnavailableError
+  end
+
+  it "raises an exception when no cask is specified" do
+    lambda {
+      Cask::CLI::Install.run
+    }.must_raise CaskUnspecifiedError
+  end
+end

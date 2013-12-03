@@ -3,4 +3,5 @@ class Spotify < Cask
   homepage 'https://www.spotify.com'
   version 'stable'
   no_checksum
+  link 'Spotify.app'
 end

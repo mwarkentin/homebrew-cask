@@ -1,6 +1,7 @@
 class TorBrowser < Cask
+  url 'https://www.torproject.org/dist/torbrowser/osx/TorBrowser-2.3.25-15-osx-x86_64-en-US.zip'
   homepage 'https://www.torproject.org/projects/torbrowser.html'
-  url 'https://www.torproject.org/dist/torbrowser/osx/TorBrowser-2.3.25-4-osx-x86_64-en-US.zip'
-  version '2.3.25-4'
-  sha1 '5cb5a5dac27ba40cdaeefd0fdb753e50882a89ec'
+  version '2.3.25-15'
+  sha1 '2cbd2dc7426d88e1f29d2a8e5b810938e5b98df2'
+  link 'TorBrowser_en-US.app'
 end

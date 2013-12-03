@@ -3,4 +3,5 @@ class ApGrapher < Cask
   homepage 'http://www.chimoosoft.com/products/apgrapher/'
   version 'latest'
   no_checksum
+  link 'AP Grapher.app'
 end

@@ -1,9 +1,14 @@
 class AdobeAir < Cask
-  url 'http://airdownload.adobe.com/air/mac/download/3.5/AdobeAIR.dmg'
+  url 'http://airdownload.adobe.com/air/mac/download/3.9/AdobeAIR.dmg'
   homepage 'https://get.adobe.com/air/'
-  version '3.5'
+  version '3.9'
+  sha1 'd2ea487a8f20e7042e9d8e99f312056daf5dc925'
+  link 'Adobe AIR Installer.app'
   
-  #caveat 'You need to run {{install_path}}/AdobeAIRInstaller.app to actually install Adobe AIR'
-  
-  sha1 '42e3af2bd82a285e1b3d7d0c9779a8d19dcdd723'
+  def caveats; <<-EOS.undent
+    You need to run #{destination_path/'AdobeAIRInstaller.app'} to actually install Adobe AIR
+    EOS
+  end
 end
+
+

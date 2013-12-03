@@ -1,6 +1,7 @@
 class Xscope < Cask
-  url 'http://iconfactory.com/assets/software/xscope/xScope-3.5.1.zip'
+  url 'http://iconfactory.com/assets/software/xscope/xScope-3.6.2.zip'
   homepage 'http://iconfactory.com/software/xscope'
-  version '3.5.1'
-  sha1 'b355b3aab636ce535d67d8496d2211b4c2589272'
+  version '3.6.2'
+  sha1 'be15205e05e30791ac4d5efe23b69d5c7d2a568b'
+  link 'xScope.app'
 end

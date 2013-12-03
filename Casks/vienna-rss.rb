@@ -1,6 +1,7 @@
 class ViennaRss < Cask
-  url 'http://downloads.sourceforge.net/vienna-rss/Vienna3.0.0_beta11.tgz'
+  url 'http://downloads.sourceforge.net/vienna-rss/Vienna3.0.0_beta18.tgz'
   homepage 'http://www.vienna-rss.org'
-  version '3.0.0_beta11'
-  sha1 'c1530387fb471331ed3947994e2071151e8d471b'
+  version '3.0.0_beta18'
+  sha1 'd896b947470126e1d99a5ab9370452c2e7cb8033'
+  link 'Vienna.app'
 end

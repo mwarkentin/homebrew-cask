@@ -1,6 +1,7 @@
 class HandsOff < Cask
-  url 'https://www.metakine.com/files/Hands%20Off!%20v1.5.1.dmg'
+  url 'https://www.oneperiodic.com/files/Hands%20Off!%20v2.1.0.dmg'
   homepage 'http://www.metakine.com/products/handsoff/'
-  version '1.5.1'
-  sha1 '6738476c53f73a4924fa38444c5802250b180d4f'
+  version '2.1.0'
+  sha1 '1ee63110d4c9c6c87c18b2abfb8b82d028d447a0'
+  link 'Hands Off!.app'
 end

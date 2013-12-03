@@ -23,19 +23,6 @@ describe Cask::DSL do
     ]
   end
 
-  it "still lets you set content_length even though it is deprecated" do
-    OldContentLengthCask = Class.new(Cask)
-    begin
-      shutup do
-        OldContentLengthCask.class_eval do
-          content_length '12345'
-        end
-      end
-    rescue Exception => e
-      flunk("expected content_length to work, but got exception #{e}")
-    end
-  end
-
   it "prevents the entire world from crashing when a cask includes an unknown method" do
     UnexpectedMethodCask = Class.new(Cask)
     begin
@@ -52,11 +39,49 @@ describe Cask::DSL do
   it "allows you to specify linkables" do
     CaskWithLinkables = Class.new(Cask)
     CaskWithLinkables.class_eval do
-      link :app, 'Foo.app'
-      link :app, 'Bar.app'
+      link 'Foo.app'
+      link 'Bar.app'
     end
 
     instance = CaskWithLinkables.new
-    Array(instance.linkables[:app]).must_equal %w[Foo.app Bar.app]
+    Array(instance.artifacts[:link]).sort.must_equal %w[Bar.app Foo.app]
+  end
+
+  it "allow linkables to be set to empty" do
+    CaskWithNoLinkables = Class.new(Cask)
+
+    instance = CaskWithNoLinkables.new
+    Array(instance.artifacts[:link]).must_equal %w[]
+  end
+
+  it "allows caveats to be specified via a method define" do
+    PlainCask = Class.new(Cask)
+
+    instance = PlainCask.new
+
+    instance.caveats.must_be :empty?
+
+    CaskWithCaveats = Class.new(Cask)
+    CaskWithCaveats.class_eval do
+      def caveats; <<-EOS.undent
+        When you install this cask, you probably want to know this.
+        EOS
+      end
+    end
+
+    instance = CaskWithCaveats.new
+
+    instance.caveats.must_equal "When you install this cask, you probably want to know this.\n"
+  end
+
+  it "allows installable pkgs to be specified" do
+    CaskWithInstallables = Class.new(Cask)
+    CaskWithInstallables.class_eval do
+      install 'Foo.pkg'
+      install 'Bar.pkg'
+    end
+
+    instance = CaskWithInstallables.new
+    Array(instance.artifacts[:install]).sort.must_equal %w[Bar.pkg Foo.pkg]
   end
 end

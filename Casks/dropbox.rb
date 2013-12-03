@@ -1,6 +1,7 @@
 class Dropbox < Cask
-  url 'https://d1ilhw0800yew8.cloudfront.net/client/Dropbox%202.0.6.dmg'
-  homepage 'http://www.dropbox.com/'
-  version '2.0.6'
-  sha1 '28bec064ddbd3321266cb734dc275eeb6bc12f52'
+  url 'https://www.dropbox.com/download?plat=mac'
+  homepage 'https://www.dropbox.com/'
+  version 'latest'
+  no_checksum
+  link 'Dropbox.app'
 end

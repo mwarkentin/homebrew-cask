@@ -15,6 +15,25 @@ class CaskMissingHomepage < Cask
   version '1.2.3'
 end
 
+class CaskSourceForgeIncorrectURLFormat < Cask
+  version '1.2.3'
+  homepage 'http://sourceforge.net/projects/something/'
+  url 'http://sourceforge.net/projects/something/files/Something-1.2.3.dmg/download'
+end
+
+class CaskSourceForgeCorrectURLFormat < Cask
+  version '1.2.3'
+  homepage 'http://sourceforge.net/projects/something/'
+  url 'http://downloads.sourceforge.net/project/something/Something-1.2.3.dmg'
+end
+
+class CaskSourceForgeOtherCorrectURLFormat < Cask
+  version 'latest'
+  homepage 'http://sourceforge.net/projects/something/'
+  url 'http://sourceforge.net/projects/something/files/latest/download'
+end
+
+
 describe Cask::Audit do
   describe "result" do
     it "is 'failed' if there are have been any errors added" do
@@ -57,5 +76,35 @@ describe Cask::Audit do
       end
     end
 
+    describe "preferred download URL formats" do
+      it "adds a warning if SourceForge doesn't use download subdomain" do
+        warning_msg = 'SourceForge URL format incorrect. See https://github.com/phinze/homebrew-cask/blob/master/CONTRIBUTING.md#sourceforge-urls'
+
+
+        audit = Cask::Audit.new(CaskSourceForgeIncorrectURLFormat.new)
+        audit.run!
+        audit.warnings.must_include warning_msg
+
+        audit = Cask::Audit.new(CaskSourceForgeCorrectURLFormat.new)
+        audit.run!
+        audit.warnings.wont_include warning_msg
+
+        audit = Cask::Audit.new(CaskSourceForgeOtherCorrectURLFormat.new)
+        audit.run!
+        audit.warnings.wont_include warning_msg
+      end
+    end
+
+    describe "audit of downloads" do
+      it "creates an error if the download fails" do
+        error_message = "Download Failed"
+        download = mock()
+        download.expects(:perform).raises(StandardError.new(error_message))
+
+        audit = Cask::Audit.new(TestHelper.test_cask)
+        audit.run!(download)
+        audit.errors.first.must_match(/#{error_message}/)
+      end
+    end
   end
 end

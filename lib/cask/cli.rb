@@ -1,5 +1,19 @@
+class Cask::CLI; end
+
 require 'optparse'
 require 'shellwords'
+
+require 'cask/cli/alfred'
+require 'cask/cli/audit'
+require 'cask/cli/checklinks'
+require 'cask/cli/create'
+require 'cask/cli/edit'
+require 'cask/cli/home'
+require 'cask/cli/info'
+require 'cask/cli/install'
+require 'cask/cli/list'
+require 'cask/cli/search'
+require 'cask/cli/uninstall'
 
 class Cask::CLI
   def self.commands
@@ -15,10 +29,14 @@ class Cask::CLI
   end
 
   def self.process(arguments)
-    Cask.init
     command, *rest = *arguments
     rest = process_options(rest)
+    Cask.init
     lookup_command(command).run(*rest)
+  rescue CaskError => e
+    onoe e
+    $stderr.puts e.backtrace if @debug
+    exit 1
   end
 
   def self.nice_listing(cask_list)
@@ -42,7 +60,16 @@ class Cask::CLI
   def self.parser
     @parser ||= OptionParser.new do |opts|
       opts.on("--appdir=MANDATORY") do |v|
-        Cask.appdir = Pathname.new File.expand_path(v)
+        Cask.appdir = Pathname(v).expand_path
+      end
+      opts.on("--prefpanedir=MANDATORY") do |v|
+        Cask.prefpanedir = Pathname(v).expand_path
+      end
+      opts.on("--qlplugindir=MANDATORY") do |v|
+        Cask.qlplugindir = Pathname(v).expand_path
+      end
+      opts.on("--debug") do |v|
+        @debug = true
       end
     end
   end
@@ -50,7 +77,7 @@ class Cask::CLI
   def self.process_options(args)
     all_args = Shellwords.shellsplit(ENV['HOMEBREW_CASK_OPTS'] || "") + args
     remaining = []
-    while !all_args.empty?
+    until all_args.empty?
       begin
         head = all_args.shift
         remaining.concat(parser.parse([head]))
@@ -81,7 +108,7 @@ class Cask::CLI
       puts <<-PURPOSE.undent
       {{ brew-cask }}
         brew-cask provides a friendly homebrew-style CLI workflow for the
-        administration Mac applications distributed as binaries
+        administration of Mac applications distributed as binaries
       PURPOSE
     end
 

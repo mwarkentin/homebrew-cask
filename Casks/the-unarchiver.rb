@@ -1,6 +1,7 @@
 class TheUnarchiver < Cask
-  url 'http://theunarchiver.googlecode.com/files/TheUnarchiver3.7.zip'
+  url 'http://theunarchiver.googlecode.com/files/TheUnarchiver3.9.1.zip'
   homepage 'http://unarchiver.c3.cx/'
-  version '3.7'
-  sha1 'da29b9f591d299cf1f869b7c77aac38908748ad5'
+  version '3.9.1'
+  sha1 'fc68b4b2a11560535ad055a464b48859186ba2d7'
+  link 'The Unarchiver.app'
 end
