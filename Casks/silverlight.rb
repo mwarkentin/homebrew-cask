@@ -1,7 +1,20 @@
-class Silverlight < Cask
-  url 'http://silverlight.dlservice.microsoft.com/download/6/B/8/6B885B0B-73D4-4BCE-BFFF-154B4A402D22/20913.00/Silverlight.dmg'
-  homepage 'http://www.microsoft.com/silverlight/'
-  version '5.1.20913.0'
-  sha1 '87181a49ec802e8eaa00bdd0b8e7dbb8c9201812'
-  install 'Silverlight.pkg'
+cask 'silverlight' do
+  version '5.1.41212.0'
+  sha256 :no_check # required as upstream package is updated in-place
+
+  url 'https://download.microsoft.com/download/5/3/D/53D3880B-25F8-4714-A4AC-E463A492F96E/41212.00/Silverlight.dmg'
+  name 'Silverlight'
+  homepage 'https://www.microsoft.com/silverlight/'
+  license :gratis
+
+  pkg 'silverlight.pkg'
+
+  uninstall pkgutil: 'com.microsoft.SilverlightInstaller'
+
+  zap       delete: [
+                      '~/Library/Application Support/Microsoft/Silverlight',
+                      '~/Library/Preferences/com.microsoft.silverlight.plist',
+                      '~/Library/Saved Application State/com.microsoft.silverlight.savedState',
+                    ],
+            rmdir:  '~/Library/Application Support/Microsoft/'
 end

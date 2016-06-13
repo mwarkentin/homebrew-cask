@@ -1,7 +1,14 @@
-class Qlimagesize < Cask
-  url 'http://repo.whine.fr/qlImageSize.qlgenerator-10.8.zip'
+cask 'qlimagesize' do
+  version :latest
+  sha256 :no_check
+
+  # repo.whine.fr was verified as official when first introduced to the cask
+  url 'https://repo.whine.fr/qlImageSize.pkg'
+  name 'qlImageSize'
   homepage 'https://github.com/Nyx0uf/qlImageSize'
-  version 'latest'
-  no_checksum
-  qlplugin 'qlImageSize.qlgenerator'
+  license :bsd
+
+  pkg 'qlImageSize.pkg'
+
+  uninstall pkgutil: 'io.whine.qlimagesize.pkg'
 end

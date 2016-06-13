@@ -1,7 +1,16 @@
-class Emacs < Cask
-  url 'http://emacsformacosx.com/emacs-builds/Emacs-24.3-universal-10.6.8.dmg'
+cask 'emacs' do
+  version '24.5-1'
+  sha256 'c99c3def07886c0897c7c4bfc4a19338ea3d5bbcc2986d48be98aae1401f5830'
+
+  url "http://emacsformacosx.com/emacs-builds/Emacs-#{version}-universal.dmg"
+  name 'Emacs'
   homepage 'http://emacsformacosx.com/'
-  version '24.3'
-  sha1 '1ee96baa50806b255d2114549acf2e6710949213'
-  link 'Emacs.app'
+  license :oss
+
+  app 'Emacs.app'
+  binary "#{appdir}/Emacs.app/Contents/MacOS/bin/emacsclient"
+  binary "#{appdir}/Emacs.app/Contents/MacOS/bin/ctags"
+  binary "#{appdir}/Emacs.app/Contents/MacOS/bin/grep-changelog"
+  binary "#{appdir}/Emacs.app/Contents/MacOS/bin/ebrowse"
+  binary "#{appdir}/Emacs.app/Contents/MacOS/bin/etags"
 end

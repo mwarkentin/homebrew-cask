@@ -1,7 +1,15 @@
-class Processing < Cask
-  url 'http://download.processing.org/processing-2.1-macosx.zip'
-  homepage 'http://processing.org/'
-  version '2.1'
-  sha1 '4e51f26c8bd0d13a28cf70f367d4966c396d6079'
-  link 'Processing.app'
+cask 'processing' do
+  version '3.1.1'
+  sha256 '32bb3ae5c431e5bc92a457a53d3bac51874a530898c32625a44b5bdcf1edebdc'
+
+  url "http://download.processing.org/processing-#{version}-macosx.zip"
+  appcast 'https://github.com/processing/processing/releases.atom',
+          checkpoint: 'fb0627edbf01a70261d623306a63c455d96f182d70b2e4caf390adfa8063f92d'
+  name 'Processing'
+  homepage 'https://processing.org/'
+  license :gpl
+
+  app 'Processing.app'
+
+  zap delete: '~/Library/Processing/preferences.txt'
 end

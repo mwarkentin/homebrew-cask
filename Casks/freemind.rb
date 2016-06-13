@@ -1,7 +1,11 @@
-class Freemind < Cask
-  url 'http://downloads.sourceforge.net/project/freemind/freemind/1.0.0/FreeMind_1.0.0.dmg'
-  homepage 'freemind.sourceforge.net'
-  version '1.0.0'
-  sha1 'eb24852195b434b1c72e5b5759b3e54d5a352111'
-  link 'FreeMind.app'
+cask 'freemind' do
+  version '1.0.1'
+  sha256 '0bd93317567f947e7fa3b3e8d2e0d908300642edc5e07f1929157469ffd14ea3'
+
+  url "http://downloads.sourceforge.net/project/freemind/freemind/#{version}/FreeMind_#{version}.dmg"
+  name 'FreeMind'
+  homepage 'http://freemind.sourceforge.net/wiki/index.php/Main_Page'
+  license :gpl
+
+  app 'FreeMind.app'
 end

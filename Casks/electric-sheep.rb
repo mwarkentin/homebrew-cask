@@ -1,7 +1,14 @@
-class ElectricSheep < Cask
-  url 'http://electricsheep.googlecode.com/files/electricsheep-2.7b35b.dmg'
+cask 'electric-sheep' do
+  version '2.7b36'
+  sha256 'e8b35e203264adc6e8801d2e7c725453cca2c3adadda29640144ea3b50d37869'
+
+  # d100rc88eim93q.cloudfront.net was verified as official when first introduced to the cask
+  url "https://d100rc88eim93q.cloudfront.net/electricsheep-#{version}.dmg"
+  name 'Electric Sheep'
   homepage 'http://www.electricsheep.org'
-  version '2.7b35b'
-  sha1 'fed402ee86bd91de8166c2e297f4cf3a06c99b70'
-  install 'Electric Sheep.mpkg'
+  license :gpl
+
+  pkg 'Electric Sheep.pkg'
+
+  uninstall pkgutil: 'org.electricsheep.electricSheep.*'
 end

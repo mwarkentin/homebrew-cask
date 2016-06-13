@@ -1,7 +1,11 @@
-class Eyetv < Cask
-  url 'http://edgedownloads.elgato.com/eyetvdownloads/support/eyetv_361_7120.dmg'
-  homepage 'http://www.elgato.com/'
-  version '3.6.1'
-  sha1 'da9eed821cf8fb1f5ddb27c155c3514230907b1e'
-  link 'EyeTV.app'
+cask 'eyetv' do
+  version '3.6.8_7407'
+  sha256 '7dea4cdd5f9feb643a45f60ccb93dcf5983dd13946b95621a86dd5b06b87e1d7'
+
+  url "http://files.elgato.com/eyetvdownloads/support/eyetv_#{version.delete('.')}.dmg"
+  name 'EyeTV'
+  homepage 'https://www.elgato.com/en/eyetv/eyetv-3'
+  license :commercial
+
+  app 'EyeTV.app'
 end

@@ -1,7 +1,19 @@
-class Genymotion < Cask
-  url 'https://ssl-files.genymotion.com/genymotion/genymotion-2.0.1/genymotion-2.0.1.dmg'
-  homepage 'http://www.genymotion.com/'
-  version '2.0.1'
-  sha1 'ce2a8e8a0c3760df4f2a76e368f35c963235189e'
-  link 'Genymotion.app', 'Genymotion Shell.app'
+cask 'genymotion' do
+  version '2.7.1'
+  sha256 'f5ee3cfd04e09eac73b57362e9097552fdb44d9271384c2d7b03ad93fbdf74d8'
+
+  url "http://files2.genymotion.com/genymotion/genymotion-#{version}/genymotion-#{version}.dmg"
+  name 'Genymotion'
+  homepage 'https://www.genymotion.com/'
+  license :commercial
+
+  depends_on cask: 'virtualbox'
+
+  app 'Genymotion.app'
+  app 'Genymotion Shell.app'
+  binary "#{appdir}/Genymotion Shell.app/Contents/MacOS/genyshell"
+
+  caveats do
+    files_in_usr_local
+  end
 end

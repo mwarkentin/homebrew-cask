@@ -1,9 +1,17 @@
-class Totalfinder < Cask
-  url 'http://downloads.binaryage.com/TotalFinder-1.5.4.dmg'
+cask 'totalfinder' do
+  version '1.7.12'
+  sha256 'f65a507f924295ac881f3960fdbe4aa51958ed2eaa81b7e01511697dbb8577ec'
+
+  url "http://downloads.binaryage.com/TotalFinder-#{version}.dmg"
+  name 'TotalFinder'
   homepage 'http://totalfinder.binaryage.com'
-  version '1.5.4'
-  sha1 'aafaca6d516740726ef8c5422622289ed9a5b76e'
-  install 'TotalFinder.pkg'
-  uninstall :script => 'TotalFinder Uninstaller.app/Contents/MacOS/TotalFinder Uninstaller',
-            :args => %w[--headless]
+  license :commercial
+
+  pkg 'TotalFinder.pkg'
+
+  uninstall pkgutil: 'com.binaryage.pkg.totalfinder.app',
+            script:  {
+                       executable: 'TotalFinder Uninstaller.app/Contents/MacOS/TotalFinder Uninstaller',
+                       args:       %w[--headless],
+                     }
 end

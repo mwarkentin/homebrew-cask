@@ -1,7 +1,12 @@
-class Unetbootin < Cask
-  homepage 'http://unetbootin.sourceforge.net/'
-  url 'http://downloads.sourceforge.net/sourceforge/unetbootin/unetbootin-mac-585.zip'
-  version '585'
-  sha1 '18050ffa1c510fbf85de485c0d5190e9581cc6ce'
-  link 'unetbootin.app'
+cask 'unetbootin' do
+  version '613,212083654'
+  sha256 'b9356ad2ef3cfa6881690ddc1136c45e6d3f25063fdeaeeb477633500b0c7684'
+
+  # launchpadlibrarian.net/212083654/unetbootin-mac-613.zip was verified as official when first introduced to the cask
+  url "https://launchpadlibrarian.net/#{version.after_comma}/unetbootin-mac-#{version.before_comma}.zip"
+  name 'UNetbootin'
+  homepage 'https://unetbootin.github.io/'
+  license :gpl
+
+  app 'unetbootin.app'
 end

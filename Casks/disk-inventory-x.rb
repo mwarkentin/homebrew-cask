@@ -1,7 +1,12 @@
-class DiskInventoryX < Cask
-  url 'http://www.alice-dsl.net/tjark.derlien/DIX1.0Universal.dmg'
-  homepage 'http://www.derlien.com/'
+cask 'disk-inventory-x' do
   version '1.0'
-  sha1 'ba0f5fd772116f28de0e1a3651c81e1d16701a1e'
-  link 'Disk Inventory X.app'
+  sha256 'f61c070a1ec8f29ee78b8a7c84dd4124553098acc87134e2ef05dbaf2a442636'
+
+  url "http://www.derlien.com/diskinventoryx/downloads/dev/DIX#{version}Universal.dmg",
+      user_agent: :fake
+  name 'Disk Inventory X'
+  homepage 'http://www.derlien.com/'
+  license :gpl
+
+  app 'Disk Inventory X.app'
 end

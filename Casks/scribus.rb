@@ -1,7 +1,12 @@
-class Scribus < Cask
-  url 'http://downloads.sourceforge.net/project/scribus/scribus/1.4.2/scribus-1.4.2.dmg'
+cask 'scribus' do
+  version '1.4.6'
+  sha256 'db818ae3a69ca16c1b3fb873b55903062f7b81f42d7adcc64a61ee93bf95727e'
+
+  # sourceforge.net is the official download host per the vendor homepage
+  url "http://downloads.sourceforge.net/project/scribus/scribus/#{version}/scribus-#{version}.dmg"
+  name 'Scribus'
   homepage 'http://www.scribus.net/canvas/Scribus'
-  version '1.4.2'
-  sha1 '482be9e18f3a54e7cbf4472969a56f5a30f1a3d1'
-  link 'Scribus.app'
-end 
+  license :gpl
+
+  app 'Scribus.app'
+end

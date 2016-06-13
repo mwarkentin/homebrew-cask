@@ -1,7 +1,14 @@
-class ItunesVolumeControl < Cask
-  url 'https://github.com/alberti42/iTunes-Volume-Control/raw/288c9f3f2c0d00dc76afde2fcc6a7362505113f1/iTunes%20Volume%20Control.dmg'
+cask 'itunes-volume-control' do
+  version '1.5.1'
+  sha256 '4af853571590f30457b015c2998881d0436643579eb2a67f6e6b3aa30731c200'
+
+  # uni-bonn.de/alberti/iTunesVolumeControl was verified as official when first introduced to the cask
+  url "http://quantum-technologies.iap.uni-bonn.de/alberti/iTunesVolumeControl/iTunesVolumeControl-v#{version}.zip"
+  name 'iTunes Volume Control'
   homepage 'https://github.com/alberti42/iTunes-Volume-Control'
-  version '1.4.6'
-  sha1 '0dbf90d5e6ba8d693609bf5e26884ceb55040304'
-  link 'iTunes Volume Control.app'
+  license :oss
+
+  auto_updates true
+
+  app 'iTunes Volume Control.app'
 end

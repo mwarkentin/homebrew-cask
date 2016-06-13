@@ -1,7 +1,11 @@
-class Squidman < Cask
-  url 'http://squidman.net/resources/downloads/SquidMan3.51.dmg'
+cask 'squidman' do
+  version '3.6'
+  sha256 '26544fbad48dc29dd7ea154cd48e02fa08f673bda3ff173557b8f04f1c334e43'
+
+  url "http://squidman.net/resources/downloads/SquidMan#{version}.dmg"
+  name 'SquidMan'
   homepage 'http://squidman.net/squidman/'
-  version '3.51'
-  sha1 '70ee00ff9d653b56ef48682b00ea8373ac74d20e'
-  link 'SquidMan.app'
+  license :gratis
+
+  app 'SquidMan.app'
 end

@@ -1,12 +1,43 @@
-class DefaultFolderX < Cask
-  url 'http://stclairsoft.s3.amazonaws.com/DefaultFolderX-4.5.12.dmg'
-  homepage 'http://www.stclairsoft.com/DefaultFolderX'
-  version '4.5.12'
-  sha1 '7cee468089c7244ca46e5ceb230a21cf3bf7afa9'
-  link 'Default Folder X Installer.app'
+cask 'default-folder-x' do
+  if MacOS.release <= :leopard
+    version '4.5.12'
+    sha256 'fc2225a106d0c26a4373d92e3a4b04483830506d22ec772b432a705a634c49ed'
+  elsif MacOS.release <= :mavericks
+    version '4.7.4'
+    sha256 '96cd688a099ec0ca3340d2e43d60f51513a2186a296346e7110c296ee00828e6'
+  else
+    version '5.0.3'
+    sha256 '116a87c6e13c3096220777899989da6825be254782f69433dd04a0d766ffbb90'
+  end
 
-  def caveats; <<-EOS.undent
-    You need to run #{destination_path/'Default Folder X Installer.app'} to actually install Default Folder X
-    EOS
+  url "https://www.stclairsoft.com/download/DefaultFolderX-#{version}.dmg"
+  name 'Default Folder X'
+  homepage 'https://www.stclairsoft.com/DefaultFolderX'
+  license :commercial
+
+  if MacOS.release <= :mavericks
+    installer manual: 'Default Folder X Installer.app'
+  else
+    app 'Default Folder X.app'
+  end
+
+  postflight do
+    suppress_move_to_applications
+  end
+
+  if MacOS.release <= :mavericks
+    zap delete: [
+                  '~/Library/Preferences/com.stclairsoft.DefaultFolderX.favorites.plist',
+                  '~/Library/Preferences/com.stclairsoft.DefaultFolderX.plist',
+                  '~/Library/Preferences/com.stclairsoft.DefaultFolderX.settings.plist',
+                ]
+  else
+    zap delete: [
+                  '~/Library/Application Support/.com.stclairsoft',
+                  '~/Library/Application Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.ApplicationRecentDocuments/com.stclairsoft.defaultfolderx5.sfl',
+                  '~/Library/Application Support/com.stclairsoft.DefaultFolderX5',
+                  '~/Library/Caches/com.stclairsoft.DefaultFolderX5',
+                  '~/Library/Preferences/com.stclairsoft.DefaultFolderX5.plist',
+                ]
   end
 end

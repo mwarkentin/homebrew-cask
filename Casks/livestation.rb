@@ -1,7 +1,11 @@
-class Livestation < Cask
-  url 'http://updates.livestation.com/releases/Livestation-3.3.0.dmg'
-  homepage 'http://www.livestation.com'
+cask 'livestation' do
   version '3.3.0'
-  sha1 '2d91b4807a6e63446bd569e7c819a49129f1a7c1'
-  link 'Livestation.app'
+  sha256 '8ed0bdcb6aee4dca18e64c6c6390b3f83c67c6d9c36358ff800ece7a870f9dd3'
+
+  url "http://updates.livestation.com/releases/Livestation-#{version}.dmg"
+  name 'Livestation'
+  homepage 'https://www.livestation.com'
+  license :unknown # TODO: change license and remove this comment; ':unknown' is a machine-generated placeholder
+
+  app 'Livestation.app'
 end

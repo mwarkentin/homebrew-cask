@@ -1,7 +1,11 @@
-class Baygenie < Cask
-  url 'http://www.baygenie.com/Download/BayGenie4Mac.dmg'
+cask 'baygenie' do
+  version :latest
+  sha256 :no_check
+
+  url 'https://www.baygenie.com/Download/BayGenie4Mac.dmg'
+  name 'BayGenie'
   homepage 'http://www.baygenie.com/'
-  version 'latest'
-  no_checksum
-  link 'BayGenie.app'
+  license :unknown # TODO: change license and remove this comment; ':unknown' is a machine-generated placeholder
+
+  app 'BayGenie.app'
 end

@@ -1,7 +1,11 @@
-class Gifrocket < Cask
-  url 'http://www.gifrocket.com/Gifrocket.0.1.2.zip'
-  homepage 'http://www.gifrocket.com/'
+cask 'gifrocket' do
   version '0.1.2'
-  sha1 '7bbd42edce58e48539e6e2c72e5ecb51deace7c6'
-  link 'Gifrocket.app'
+  sha256 'c5407c9caad8c038f604d35da9a6554dede79611daaf5174116ea9517a704593'
+
+  url "http://www.gifrocket.com/Gifrocket.#{version}.zip"
+  name 'Gifrocket'
+  homepage 'http://www.gifrocket.com/'
+  license :gratis
+
+  app 'Gifrocket.app'
 end

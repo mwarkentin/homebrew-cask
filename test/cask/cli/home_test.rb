@@ -1,47 +1,44 @@
 require 'test_helper'
 
-module RecordSystemCalls
-  def system(*command)
+# monkeypatch for testing
+class Hbc::CLI::Home
+  def self.system(*command)
     system_commands << command
   end
 
-  def reset!
+  def self.reset!
     @system_commands = []
   end
 
-  def system_commands
+  def self.system_commands
     @system_commands ||= []
   end
 end
 
-module Cask::CLI::Home
-  extend RecordSystemCalls
-end
-
-describe Cask::CLI::Home do
+describe Hbc::CLI::Home do
   before do
-    Cask::CLI::Home.reset!
+    Hbc::CLI::Home.reset!
   end
 
-  it 'opens the homepage for the specified cask' do
-    Cask::CLI::Home.run('alfred')
-    Cask::CLI::Home.system_commands.must_equal [
-      ['open', 'http://www.alfredapp.com/']
+  it 'opens the homepage for the specified Cask' do
+    Hbc::CLI::Home.run('alfred')
+    Hbc::CLI::Home.system_commands.must_equal [
+      ['/usr/bin/open', '--', 'https://www.alfredapp.com/']
     ]
   end
 
-  it 'works for multiple casks' do
-    Cask::CLI::Home.run('alfred', 'adium')
-    Cask::CLI::Home.system_commands.must_equal [
-      ['open', 'http://www.alfredapp.com/'],
-      ['open', 'https://www.adium.im/']
+  it 'works for multiple Casks' do
+    Hbc::CLI::Home.run('alfred', 'adium')
+    Hbc::CLI::Home.system_commands.must_equal [
+      ['/usr/bin/open', '--', 'https://www.alfredapp.com/'],
+      ['/usr/bin/open', '--', 'https://www.adium.im/']
     ]
   end
 
-  it "raises an exception when no cask is specified" do
-    lambda {
-      Cask::CLI::Home.run
-    }.must_raise CaskUnspecifiedError
+  it "opens the project page when no Cask is specified" do
+    Hbc::CLI::Home.run
+    Hbc::CLI::Home.system_commands.must_equal [
+      ['/usr/bin/open', '--', 'http://caskroom.io/'],
+    ]
   end
 end
-

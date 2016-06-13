@@ -1,7 +1,11 @@
-class Subnetcalc < Cask
-  url 'http://subnetcalc.free.fr/download/subnetcalc-1.1.dmg'
-  homepage 'http://subnetcalc.free.fr/'
+cask 'subnetcalc' do
   version '1.1'
-  sha1 '917fa9f5d50ffb7de14e4c69e75be50fc65f163a'
-  link 'SubnetCalc.app'
+  sha256 '19157baacac0cede6849356cb305a0ed2e4290e1e9e8ac4b691fd1d7ce1920cf'
+
+  url "http://subnetcalc.free.fr/download/subnetcalc-#{version}.dmg"
+  name 'SubnectCalc'
+  homepage 'http://subnetcalc.free.fr/'
+  license :gpl
+
+  app 'SubnetCalc.app'
 end

@@ -1,14 +1,24 @@
-class AdobeAir < Cask
-  url 'http://airdownload.adobe.com/air/mac/download/3.9/AdobeAIR.dmg'
+cask 'adobe-air' do
+  version '21.0'
+  sha256 :no_check # required as upstream package is updated in-place
+
+  url "https://airdownload.adobe.com/air/mac/download/#{version}/AdobeAIR.dmg"
+  name 'Adobe AIR'
   homepage 'https://get.adobe.com/air/'
-  version '3.9'
-  sha1 'd2ea487a8f20e7042e9d8e99f312056daf5dc925'
-  link 'Adobe AIR Installer.app'
-  
-  def caveats; <<-EOS.undent
-    You need to run #{destination_path/'AdobeAIRInstaller.app'} to actually install Adobe AIR
-    EOS
-  end
+  license :gratis
+
+  installer script: 'Adobe AIR Installer.app/Contents/MacOS/Adobe AIR Installer',
+            args:   %w[-silent],
+            sudo:   true
+
+  uninstall script: {
+                      executable: 'Adobe AIR Installer.app/Contents/MacOS/Adobe AIR Installer',
+                      args:       %w[-uninstall],
+                    }
+
+  zap delete: [
+                '~/Library/Application Support/Adobe/AIR',
+                '~/Library/Caches/com.adobe.air.ApplicationInstaller',
+              ],
+      rmdir:  '~/Library/Application Support/Adobe/'
 end
-
-

@@ -1,7 +1,13 @@
-class Woodhouse < Cask
-  url 'https://github.com/downloads/phinze/woodhouse/Woodhouse-0.5.0.dmg'
-  homepage 'https://github.com/phinze/woodhouse/'
+cask 'woodhouse' do
   version '0.5.0'
-  sha1 'a83adecc77c8ceef56a85c45c166892d4517f8fb'
-  link 'Woodhouse.app'
+  sha256 '3ed1b6711eb9ec862e34addc141d681d9b0fed2950b9d9b7189734087eeb7541'
+
+  url "https://github.com/downloads/phinze/woodhouse/Woodhouse-#{version}.dmg"
+  appcast 'https://phinze.github.com/woodhouse/appcast.xml',
+          checkpoint: '13325232ccfc9574fe890e370d05c4edf0255fb49a4785b242e94f97fb24fc14'
+  name 'Woodhouse'
+  homepage 'https://github.com/phinze/woodhouse/'
+  license :mit
+
+  app 'Woodhouse.app'
 end

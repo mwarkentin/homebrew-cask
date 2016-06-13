@@ -1,7 +1,14 @@
-class SuspiciousPackage < Cask
-  url 'http://www.mothersruin.com/software/downloads/SuspiciousPackage.dmg'
+cask 'suspicious-package' do
+  version :latest
+  sha256 :no_check
+
+  url 'http://www.mothersruin.com/software/downloads/SuspiciousPackage.xip'
+  name 'Suspicious Package'
   homepage 'http://www.mothersruin.com/software/SuspiciousPackage/'
-  version 'latest'
-  no_checksum
-  qlplugin 'Suspicious Package.qlgenerator'
+  license :gratis
+
+  depends_on formula: 'unar'
+  container type: :generic_unar
+
+  app 'Suspicious Package.app'
 end

@@ -1,8 +1,16 @@
-class FenderAmpDrivers < Cask
-  url 'http://support.fender.com/software/fender_software/fender_fuse/mac/FenderFUSE_FULL_2.7.1.dmg'
-  homepage 'https://fuse.fender.com/'
+cask 'fender-amp-drivers' do
   version '2.7.1'
-  sha1 '9ef7b06843fce4cf27b00ef81db1cf025825d647'
-  install 'Fender FUSE Installer.app/Contents/Resources/FenderDrivers.pkg'
-  uninstall :pkgutil => 'com.Fender.pkg.FenderAmpDrivers'
+  sha256 'e68de1a1c1068d34dda354e2678ddac4a796b2ccdface95b034a438455442919'
+
+  # fmicassets.com/fender was verified as official when first introduced to the cask
+  url "https://www.fmicassets.com/fender/support/software/fender_software/fender_fuse/mac/FenderFUSE_FULL_#{version}.dmg"
+  name 'Fender FUSE'
+  homepage 'https://fuse.fender.com/'
+  license :unknown # TODO: change license and remove this comment; ':unknown' is a machine-generated placeholder
+
+  depends_on macos: '>= :lion'
+
+  pkg 'Fender FUSE Installer.app/Contents/Resources/FenderDrivers.pkg'
+
+  uninstall pkgutil: 'com.Fender.pkg.FenderAmpDrivers'
 end

@@ -1,7 +1,11 @@
-class Burn < Cask
-  url 'http://downloads.sourceforge.net/project/burn-osx/Burn/2.5.1/burn251.zip'
-  homepage 'http://burn-osx.sourceforge.net/'
+cask 'burn' do
   version '2.5.1'
-  sha1 '2a71f7b7e837cf5358d20228da51b4f3fc247844'
-  link 'Burn.app'
+  sha256 'e82d2b7ef6a99e5a139706ff4e360659830d618ab8743e4b55ec80cdcdc97596'
+
+  url "http://downloads.sourceforge.net/project/burn-osx/Burn/#{version}/burn251.zip"
+  name 'Burn'
+  homepage 'http://burn-osx.sourceforge.net/'
+  license :gpl
+
+  app 'Burn.localized/Burn.app'
 end

@@ -1,9 +1,23 @@
-class Osxfuse < Cask
-  url 'http://downloads.sourceforge.net/project/osxfuse/osxfuse-2.6.1/osxfuse-2.6.1.dmg'
-  homepage 'http://osxfuse.github.io/'
-  version '2.6.1'
-  sha1 '2e43a6593aee5fa45166b8abc70ad054a83d083b'
-  install 'Install OSXFUSE 2.6.pkg'
-  uninstall :pkgutil => 'com.github.osxfuse.pkg.Core|com.github.osxfuse.pkg.PrefPane',
-            :kext => 'com.github.osxfuse.filesystems.osxfusefs'
+cask 'osxfuse' do
+  version '2.8.3'
+  sha256 'b0f05fa6e74372b73417e89bfd103a46a0b968239f03832755e424bec09051e6'
+
+  # sourceforge.net/project/osxfuse was verified as official when first introduced to the cask
+  url "http://downloads.sourceforge.net/sourceforge/osxfuse/osxfuse-#{version}.dmg"
+  name 'OSXFUSE'
+  homepage 'https://osxfuse.github.io/'
+  license :bsd
+
+  pkg "Install OSXFUSE #{version.major_minor}.pkg"
+
+  postflight do
+    set_ownership ['/usr/local/include', '/usr/local/lib']
+  end
+
+  uninstall pkgutil: 'com.github.osxfuse.pkg.Core|com.github.osxfuse.pkg.PrefPane',
+            kext:    'com.github.osxfuse.filesystems.osxfusefs'
+
+  caveats do
+    reboot
+  end
 end

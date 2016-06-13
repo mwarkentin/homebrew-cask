@@ -1,7 +1,17 @@
-class Mailplane < Cask
-  url 'http://dist.mailplaneapp.com/builds/Mailplane_3_827.tbz'
-  homepage 'http://mailplaneapp.com/'
-  version '3.0.3 (827)'
-  sha1 '32ea96deffae3a8a351180d96fe9caac6809c6be'
-  link 'Mailplane 3.app'
+cask 'mailplane' do
+  version :latest
+  sha256 :no_check
+
+  url 'http://update.mailplaneapp.com/mailplane_3.php'
+  name 'Mailplane'
+  homepage 'http://mailplaneapp.com'
+  license :commercial
+
+  app 'Mailplane 3.app'
+
+  postflight do
+    suppress_move_to_applications
+  end
+
+  zap delete: '~/Library/Preferences/com.mailplaneapp.Mailplane.plist'
 end

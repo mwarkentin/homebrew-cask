@@ -1,7 +1,11 @@
-class Macdrops < Cask
-  url 'http://interfacelift.com/apps/macdrops/v1/Macdrops_v1.1.dmg'
-  homepage 'http://interfacelift.com/apps/macdrops/v1'
+cask 'macdrops' do
   version '1.1'
-  sha1 '6f6e5ca47f6bba151ae2796d919384a772e67c14'
-  link 'Macdrops v1.1.app'
+  sha256 'c91f10418d8dd88f395603f9b824fc1ef319ec91affe2326cff5bce7f2bd63bb'
+
+  url "https://interfacelift.com/apps/macdrops/v1/Macdrops_v#{version}.dmg"
+  name 'Macdrops'
+  homepage 'https://interfacelift.com/apps/macdrops/v1'
+  license :commercial
+
+  app "Macdrops v#{version}.app"
 end

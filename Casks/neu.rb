@@ -1,7 +1,13 @@
-class Neu < Cask
-  url 'http://downloads.elegantchaos.com/neu/neu-v1.2.1.zip'
-  homepage 'http://www.elegantchaos.com/neu/'
+cask 'neu' do
   version '1.2.1'
-  sha1 '5b03ca0a78fcabb287cc43f3902f583b547a008d'
-  link 'neu-v1.2.1/Neu.app'
+  sha256 '7d46be5ae865882553887f0942fe7d441b71b70a4ad593d3f72c897c47642552'
+
+  url "http://downloads.elegantchaos.com/neu/neu-v#{version}.zip"
+  appcast 'http://sparkle.elegantchaos.com/neu/appcast.xml',
+          checkpoint: 'fcf80e031459b0c87d4ce0c66ea1b1616278666a9c9be71d014baa61b449c55d'
+  name 'Neu'
+  homepage 'http://www.elegantchaos.com/neu/'
+  license :freemium
+
+  app "neu-v#{version}/Neu.app"
 end

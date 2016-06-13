@@ -1,7 +1,11 @@
-class Cutesdr < Cask
-  url 'http://downloads.sourceforge.net/project/cutesdr/CuteSdr111.dmg'
+cask 'cutesdr' do
+  version '1.19'
+  sha256 '41bd2ee10bc9dad3da8d3d541452f594b928823946d7a4c52f03164b9af84341'
+
+  url "http://downloads.sourceforge.net/project/cutesdr/CuteSdr#{version.delete('.')}.dmg"
+  name 'CuteSDR'
   homepage 'http://sourceforge.net/projects/cutesdr'
-  version '1.11'
-  sha1 'e7cb27206bd9d1d6c144f1980da38bad66c5559c'
-  link 'cutesdr.app'
+  license :oss
+
+  app 'cutesdr.app'
 end

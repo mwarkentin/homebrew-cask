@@ -1,8 +1,13 @@
-class Anonym < Cask
-  url 'http://www.hanynet.com/anonym-2.3.zip'
-  homepage 'http://www.hanynet.com/anonym/index.html'
+cask 'anonym' do
   version '2.3'
-  sha1 '5676c707466eaba97dd9c5905d31c7b52f8ff69a'
-  nested_container 'Anonym 2.3.dmg'
-  link 'Anonym.app'
+  sha256 '696ac1cf173976b26e2fdd8f8f087df16437e237cf271fae6dcbcc403148a0d4'
+
+  url "http://www.hanynet.com/anonym-#{version}.zip"
+  name 'Anonym'
+  homepage 'http://www.hanynet.com/anonym/'
+  license :oss
+
+  container nested: "Anonym #{version}.dmg"
+
+  app 'Anonym.app'
 end

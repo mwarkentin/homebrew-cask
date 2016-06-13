@@ -1,7 +1,18 @@
-class Kindle < Cask
-  url 'http://kindleformac.amazon.com/40499/KindleForMac.dmg'
-  homepage 'http://www.amazon.com/gp/feature.html?ie=UTF8&docId=1000464931'
-  version '1.10.6 (40499)'
-  sha1 'a086df6a67e97460fb09b6d115f71d952487ac38'
-  link 'Kindle.app'
+cask 'kindle' do
+  version '44033'
+  sha256 'f411c7ca8a7078c6fabb28884761101544208e658394e3fde313745382e66748'
+
+  url "http://kindleformac.amazon.com/#{version}/KindleForMac-#{version}.dmg"
+  name 'Kindle for Mac'
+  homepage 'https://www.amazon.com/gp/digital/fiona/kcp-landing-page'
+  license :gratis
+
+  app 'Kindle.app'
+
+  zap delete: [
+                '~/Library/Preferences/com.amazon.Kindle.plist',
+                '~/Library/Application Support/Kindle/',
+                '~/Library/Saved Application State/com.amazon.Kindle.savedState/',
+                '~/Library/Caches/com.amazon.Kindle-Crash-Reporter/',
+              ]
 end

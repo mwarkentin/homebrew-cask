@@ -1,7 +1,17 @@
-class MacupdateDesktop < Cask
-  url 'https://www.macupdate.com/download/8544/MacUpdate-Desktop-5.2.3.dmg'
+cask 'macupdate-desktop' do
+  version '6.1.2.'
+  sha256 '8a30d0f5e96c78622fb348089d3c62fa22e50f56bf8d5c7b0a3bc38317c303e6'
+
+  url "http://cdn.macupdate.com/MacUpdateDesktop#{version}.zip"
+  appcast 'http://www.macupdate.com/desktop/updates.xml',
+          checkpoint: '268853a0860e236c4c98fc55da41d24cad893011359416392af4f87dee19cbdc'
+  name 'MacUpdate Desktop'
   homepage 'https://www.macupdate.com/desktop'
-  version '5.2.3'
-  sha1 'b0c97cc7a03eb165c1455208c531797ad5beeacb'
-  link 'MacUpdate Desktop.app'
+  license :freemium
+
+  app 'MacUpdate Desktop.app'
+
+  postflight do
+    suppress_move_to_applications
+  end
 end

@@ -1,8 +1,19 @@
-class Vagrant < Cask
-  url 'http://files.vagrantup.com/packages/a40522f5fabccb9ddabad03d836e120ff5d14093/Vagrant-1.3.5.dmg'
-  homepage 'http://www.vagrantup.com'
-  version '1.3.5'
-  sha1 'c123b4f80abd9cec83f7499d8dc2bc60b850b882'
-  install 'Vagrant.pkg'
-  uninstall :script => 'uninstall.tool', :input => %w[Yes]
+cask 'vagrant' do
+  version '1.8.4'
+  sha256 'c124089c1b800e480d5777c5ef344c2731853dd237d7c70220245fafa3051fbd'
+
+  # hashicorp.com/vagrant was verified as official when first introduced to the cask
+  url "https://releases.hashicorp.com/vagrant/#{version}/vagrant_#{version}.dmg"
+  appcast 'https://github.com/mitchellh/vagrant/releases.atom',
+          checkpoint: 'd816c6e1d4281eecbe7a87268c6edd264dafdf285c5c0adb90d52ce96a427d57'
+  name 'Vagrant'
+  homepage 'https://www.vagrantup.com/'
+  license :mit
+
+  pkg 'Vagrant.pkg'
+
+  uninstall script:  { executable: 'uninstall.tool', input: %w[Yes] },
+            pkgutil: 'com.vagrant.vagrant'
+
+  zap delete: '~/.vagrant.d'
 end

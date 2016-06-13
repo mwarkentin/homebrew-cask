@@ -1,7 +1,15 @@
-class KeyCodes < Cask
+cask 'key-codes' do
+  version '2.1'
+  sha256 '60ec4c0cef5e97943c91e4ed317434bcaddd4cdbce93368d8bca9db9d45c60e2'
+
   url 'http://manytricks.com/download/keycodes'
-  homepage 'http://manytricks.com/keycodes/'
-  version '2.0'
-  sha1 '62de5df905cd183392d871e28034fc55083aed98'
-  link 'Key Codes.app'
+  appcast 'https://manytricks.com/keycodes/appcast.xml',
+          checkpoint: 'c83453117309b3ee87694a729ce8ff72bb2d862fd33054fa8916af01e1a0adaa'
+  name 'Key Codes'
+  homepage 'https://manytricks.com/keycodes/'
+  license :gratis
+
+  auto_updates true
+
+  app 'Key Codes.app'
 end

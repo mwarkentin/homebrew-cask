@@ -1,7 +1,14 @@
-class Rstudio < Cask
-  url 'http://download1.rstudio.org/RStudio-0.97.551.dmg'
-  homepage 'http://www.rstudio.com/'
-  version '0.97.551'
-  sha1 '2a665fcb918f33422337c02eeb0f28ecf30467af'
-  link 'RStudio.app'
+cask 'rstudio' do
+  version '0.99.902'
+  sha256 'c0a11f30ebdf4cacaaee450519d3f57fa9d67402594e5ab9c08d9000c2bed379'
+
+  # rstudio.org was verified as official when first introduced to the cask
+  url "https://download1.rstudio.org/RStudio-#{version}.dmg"
+  name 'RStudio'
+  homepage 'https://www.rstudio.com/'
+  license :affero
+
+  app 'RStudio.app'
+
+  zap delete: '~/.rstudio-desktop'
 end

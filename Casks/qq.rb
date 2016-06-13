@@ -1,7 +1,19 @@
-class Qq < Cask
-  url 'http://dl_dir.qq.com/qqfile/qq/QQforMac/QQ_V3.0.1.dmg'
-  homepage 'http://im.qq.com/macqq/index.shtml'
-  version '3.0.1'
-  sha1 'c48f1f37583d0cdf484979e4d2f5c0244138f1f8'
-  link 'QQ.app'
+cask 'qq' do
+  version '4.2.5'
+  sha256 'd3cd0749b63dba8419c4093f78d5a63582e5c1a6f5cd495443fef3bccb7a1522'
+
+  url "http://dldir1.qq.com/qqfile/QQforMac/QQ_V#{version}.dmg"
+  name 'QQ'
+  homepage 'http://im.qq.com/macqq/'
+  license :commercial
+
+  app 'QQ.app'
+
+  uninstall quit: 'com.tencent.qq'
+
+  zap delete: [
+                '~/Library/Containers/com.tencent.qq',
+                '~/Library/Containers/com.tencent.localserver',
+                '~/Library/Containers/com.tencent.ScreenCapture',
+              ]
 end

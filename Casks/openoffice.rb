@@ -1,8 +1,14 @@
-class Openoffice < Cask
-  url 'http://downloads.sourceforge.net/project/openofficeorg.mirror/4.0.1/binaries/en-US/Apache_OpenOffice_4.0.1_MacOS_x86_install_en-US.dmg'
-  homepage 'http://www.openoffice.org/'
-  version '4.0.1'
-  sha1 '6aed6c0a7fb6226ecbd4b6a2b371dc713ac58cd8'
-  link 'OpenOffice.app'
-end
+cask 'openoffice' do
+  version '4.1.2'
+  sha256 '4fe8e4b30989d0476fe3afc6d9d4374af57d38bd04f4a5e1947462bf5dde7699'
 
+  # sourceforge.net is the official download host per the vendor homepage
+  url "http://downloads.sourceforge.net/sourceforge/openofficeorg.mirror/Apache_OpenOffice_#{version}_MacOS_x86-64_install_en-US.dmg"
+  name 'Apache OpenOffice'
+  homepage 'https://www.openoffice.org/'
+  license :apache
+
+  app 'OpenOffice.app'
+
+  zap delete: '~/Library/Application Support/OpenOffice'
+end

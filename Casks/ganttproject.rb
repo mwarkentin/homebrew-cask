@@ -1,7 +1,11 @@
-class Ganttproject < Cask
-  url 'https://ganttproject.googlecode.com/files/ganttproject-2.6.1-r1499.dmg'
-  homepage 'http://www.ganttproject.biz'
-  version '2.6.1'
-  sha1 'e59f787256a47a90b4baf13daca7f129860d3dd7'
-  link 'GanttProject 2.6.1.app'
+cask 'ganttproject' do
+  version '2.7.1-r1924'
+  sha256 '4a7775ae3547858ca5cce91b734bb429a7e04718433e925f60da89fc1d2d154b'
+
+  url "https://dl.ganttproject.biz/ganttproject-#{version.sub(%r{-.*}, '')}/ganttproject-#{version}.dmg"
+  name 'GanttProject'
+  homepage 'https://www.ganttproject.biz'
+  license :oss
+
+  app 'GanttProject.app'
 end

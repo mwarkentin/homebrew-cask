@@ -1,7 +1,11 @@
-class Fritzing < Cask
-  url 'http://fritzing.org/media/downloads/fritzing.2013.07.27.cocoa.dmg'
+cask 'fritzing' do
+  version '0.9.3b'
+  sha256 'a057ed849b842540b98a68ab2cb996e22b482278706dd2f8da21d1bccf70513f'
+
+  url "http://fritzing.org/download/#{version}/mac-os-x-105/Fritzing#{version}.dmg"
+  name 'Fritzing'
   homepage 'http://fritzing.org/'
-  version '0.8.3b'
-  sha1 'dd32bcfaf40ccd18f2a541215136d0334d98122a'
-  link 'Fritzing.app'
+  license :gpl
+
+  app 'Fritzing.app'
 end

@@ -1,7 +1,15 @@
-class Droplr < Cask
-  url 'http://files.droplr.com.s3.amazonaws.com/apps/mac/Droplr+16.zip'
-  homepage 'https://www.droplr.com/'
-  version '3.5.2'
-  sha1 '410539ce570142de3f15748ae9a6b2581637d426'
-  link 'Droplr.app'
+cask 'droplr' do
+  version :latest
+  sha256 :no_check
+
+  url 'https://droplr.com/homebrew'
+  name 'Droplr'
+  homepage 'https://droplr.com/'
+  license :gratis
+
+  auto_updates true
+
+  app 'Droplr.app'
+
+  uninstall login_item: 'Droplr'
 end

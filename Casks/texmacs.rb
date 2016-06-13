@@ -1,7 +1,13 @@
-class Texmacs < Cask
-  url 'http://www.texmacs.org/Download/ftp/tmftp/macos/TeXmacs-1.0.7.21.dmg'
+cask 'texmacs' do
+  version '1.99.4'
+  sha256 '7065db07e8190c9d211dd32b6e3e711cc9c49210c51afe6fc273fe50aa9c9e3d'
+
+  url "http://www.texmacs.org/Download/ftp/tmftp/macos/TeXmacs-#{version}.dmg"
+  name 'GNU TeXmacs'
   homepage 'http://www.texmacs.org/'
-  version '1.0.7.21'
-  sha1 '372ad88359d5e19a4fa850529fa658f24f2f2fba'
-  link 'TeXmacs-1.0.7.21.app'
+  license :gpl
+
+  app "TeXmacs-#{version}.app"
+
+  zap delete: '~/.TeXmacs'
 end

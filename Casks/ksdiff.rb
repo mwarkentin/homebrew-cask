@@ -1,8 +1,20 @@
-class Ksdiff < Cask
-  url 'https://updates.blackpixel.com/latest?app=ksdiff&v=111'
+cask 'ksdiff' do
+  version '2.1.0 (122)'
+  sha256 '9570f53dcbeb558c53f4808ba58e8c9f394a3026e8bdd122277200a1cdf11e52'
+
+  url "http://cdn.kaleidoscopeapp.com/releases/ksdiff-#{version.sub(%r{.*?\((\d+)\)}, '\1')}.zip"
+  name 'ksdiff'
   homepage 'http://www.kaleidoscopeapp.com/ksdiff2'
-  version '2.0.1 (111)'
-  sha1 '95a6c89123e76b060657d29a90fa8016e68062d1'
-  install 'Install ksdiff.pkg'
-  uninstall :pkgutil => 'com.blackpixel.kaleidoscope.ksdiff.installer.pkg'
+  license :gratis
+
+  conflicts_with cask: 'kaleidoscope'
+
+  pkg 'Install ksdiff.pkg'
+
+  uninstall pkgutil: 'com.blackpixel.kaleidoscope.ksdiff.installer.pkg'
+
+  caveats <<-EOS.undent
+    The #{token} Cask is not needed when installing Kaleidoscope via Cask. It
+    is provided for users who have purchased Kaleidoscope via the App Store.
+  EOS
 end

@@ -1,7 +1,11 @@
-class Viber < Cask
+cask 'viber' do
+  version :latest
+  sha256 :no_check
+
   url 'http://download.viber.com/desktop/mac/Viber.dmg'
+  name 'Viber'
   homepage 'http://viber.com'
-  version 'latest'
-  no_checksum
-  link 'Viber.app'
+  license :gratis
+
+  app 'Viber.app'
 end

@@ -1,7 +1,11 @@
-class Texmaker < Cask
+cask 'texmaker' do
+  version :latest
+  sha256 :no_check
+
   url 'http://www.xm1math.net/texmaker/TexmakerMacosxLion.zip'
+  name 'Texmaker'
   homepage 'http://www.xm1math.net/texmaker'
-  version 'latest'
-  no_checksum
-  link 'texmaker.app'
+  license :gratis
+
+  app 'TexmakerMacosxLion/texmaker.app'
 end

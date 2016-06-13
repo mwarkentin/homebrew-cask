@@ -1,7 +1,19 @@
-class Diffmerge < Cask
-  url 'http://download-us.sourcegear.com/DiffMerge/4.2.0/DiffMerge.4.2.0.697.intel.stable.dmg'
-  homepage 'http://www.sourcegear.com/diffmerge'
-  version '4.2.0.697'
-  sha1 '15301ee927fd74f2c0be5efa57673c6391399ee2'
-  link 'DiffMerge.app'
+cask 'diffmerge' do
+  version '4.2.1.1013'
+  sha256 '1f19897513fb7af8fc7d3b40643bd6dee80e401c7245a0ed774e8211fd48e388'
+
+  url "http://download.sourcegear.com/DiffMerge/#{version.sub(%r{\.\d+$}, '')}/DiffMerge.#{version}.intel.stable.pkg"
+  name 'DiffMerge'
+  homepage 'https://www.sourcegear.com/diffmerge'
+  license :commercial
+
+  pkg "DiffMerge.#{version}.intel.stable.pkg"
+
+  uninstall pkgutil: 'com.sourcegear.DiffMerge'
+
+  zap       delete: [
+                      '~/Library/Preferences/com.sourcegear.DiffMerge.plist',
+                      '~/Library/Preferences/SourceGear DiffMerge Preferences',
+                      '~/Library/Saved Application State/com.sourcegear.DiffMerge.savedState',
+                    ]
 end

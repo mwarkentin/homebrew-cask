@@ -1,7 +1,11 @@
-class Pastor < Cask
-  url 'http://mehlau.net/pastor/Pastor182-signed.dmg'
-  homepage 'http://mehlau.net/pastor'
+cask 'pastor' do
   version '1.8.2'
-  sha1 '6a5df34ceb2266b5e61f49b39ac0a059c100ca37'
-  link 'Pastor.app'
+  sha256 'ac41e7f300d722fcd9733a4f13a984d211b20f95c94db4dc07ab537fd45f8370'
+
+  url "https://mehlau.net/pastor/Pastor#{version.delete('.')}-signed.dmg"
+  name 'Pastor'
+  homepage 'https://mehlau.net/pastor/'
+  license :gratis
+
+  app 'Pastor.app'
 end

@@ -1,7 +1,18 @@
-class Meshlab < Cask
-  url 'http://downloads.sourceforge.net/project/meshlab/meshlab/MeshLab%20v1.3.2/MeshLabMac_v132.dmg'
+cask 'meshlab' do
+  version '1.3.3'
+  sha256 '7a19583ecd8282e9dc84e827e9e667f2139edd371b5f83a5c3fcbb88cb33923d'
+
+  url "http://downloads.sourceforge.net/project/meshlab/meshlab/MeshLab%20v#{version}/MeshLabMac_v#{version.delete('.')}.dmg"
+  name 'MeshLab'
   homepage 'http://meshlab.sourceforge.net/'
-  version '1.3.2'
-  sha1 '2cd97156642113d828a44842c52d92882ae35221'
-  link 'meshlab.app'
+  license :gpl
+
+  app 'meshlab.app'
+
+  postflight do
+    # workaround for bug which breaks the app on case-sensitive filesystems
+    Dir.chdir("#{appdir}/meshlab.app/Contents/MacOS") do
+      File.symlink('meshlab', 'MeshLab') unless File.exist? 'MeshLab'
+    end
+  end
 end

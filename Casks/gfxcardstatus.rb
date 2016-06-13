@@ -1,7 +1,13 @@
-class Gfxcardstatus < Cask
-  homepage 'http://gfx.io/'
-  url 'http://codykrieger.com/downloads/gfxCardStatus-2.3.zip'
+cask 'gfxcardstatus' do
   version '2.3'
-  sha1 '0bd1d9d5b1da69b77217949b788597a952cbd846'
-  link 'gfxCardStatus.app'
+  sha256 '092b3e2fad44681ba396cf498707c8b6c228fd55310770a8323ebb9344b4d9a1'
+
+  url "https://gfx.io/downloads/gfxCardStatus-#{version}.zip"
+  appcast 'https://gfx.io/appcast.xml',
+          checkpoint: 'c52a51d2da8795e12eceb2d035f45ceb44197a480883408f9ea7cff96e7d2c90'
+  name 'gfxCardStatus'
+  homepage 'https://gfx.io/'
+  license :bsd
+
+  app 'gfxCardStatus.app'
 end

@@ -1,7 +1,11 @@
-class Scummvm < Cask
-  url 'http://downloads.sourceforge.net/project/scummvm/scummvm/1.6.0/scummvm-1.6.0-macosx.dmg'
+cask 'scummvm' do
+  version '1.8.0'
+  sha256 '6fb52db22b778027d0cb55be9dc8bd6f655f89314dba3e8d36aa4da12303cb7b'
+
+  url "http://scummvm.org/frs/scummvm/#{version}/scummvm-#{version}-macosx.dmg"
+  name 'ScummVM'
   homepage 'http://scummvm.org/'
-  version '1.6.0'
-  sha1 '73f428d5ecbabfeb4a54c89dd46a3963e8f9ac05'
-  link 'ScummVM.app'
+  license :gpl
+
+  app 'ScummVM.app'
 end

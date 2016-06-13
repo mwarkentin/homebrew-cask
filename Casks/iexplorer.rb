@@ -1,7 +1,15 @@
-class Iexplorer < Cask
-  url 'http://downloads.macroplant.com/iExplorer-3.2.3.0b.dmg'
-  homepage 'http://www.macroplant.com/'
-  version '3.2.3.0b'
-  sha1 'd49c2e96bee9fea4cbcfe9bd894193d5cc132402'
-  link 'iExplorer.app'
+cask 'iexplorer' do
+  version '3.9.10.0'
+  sha256 '6b58ff7da9a5a1c5a0627df4a4fcf3eca2389428ef203682ceae0b23f6d1c7e0'
+
+  url "https://www.macroplant.com/release/iExplorer-#{version}.dmg"
+  appcast 'https://www.macroplant.com/iexplorer/ie3-appcast.xml',
+          checkpoint: 'a75ebd8e8305d8d9b4afce5db4b22b0b53f0d31ddb2aad56a93dd97ba1391dbc'
+  name 'iExplorer'
+  homepage 'https://www.macroplant.com/iexplorer/'
+  license :freemium
+
+  depends_on macos: '>= :snow_leopard'
+
+  app 'iExplorer.app'
 end

@@ -1,7 +1,11 @@
-class Money < Cask
-  url 'http://download.jumsoft.com/Applications/Money/Money_4.5.1.zip'
-  homepage 'http://www.jumsoft.com/money/'
-  version '4.5.1'
-  sha1 '5fa4e5f956b06559d007d1dacc57a3019314bbc7'
-  link 'Money.app'
+cask 'money' do
+  version '4.6'
+  sha256 'd012fd407a083f01cae851bdc43caf311e85b6cedaf0c05b44a0539711a4a47c'
+
+  url "http://download.jumsoft.com/Applications/Money/Money_#{version}.zip"
+  name 'Money'
+  homepage 'https://www.jumsoft.com/money/'
+  license :commercial
+
+  app 'Money.app'
 end

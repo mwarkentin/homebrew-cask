@@ -1,16 +1,15 @@
-class X48 < Cask
-  url 'https://sites.google.com/a/sharkus.com/sharkus-com/Home/x48-0.6.4%20osx.zip'
-  homepage 'http://blog.sharkus.com/2012/08/osx-hp48-emulators.html'
+cask 'x48' do
+  # note: "48" is not a version number, but an intrinsic part of the product name
   version '0.6.4'
-  sha1 '8b7390fccaf682eb9f02a09889060ac65e60f561'
-  link 'x48-0.6.4 osx/x48.app'
+  sha256 '21184fceec8fd471d034932ac9b49f41c98cd5d730fa3fb02ccf0bcf02951f70'
 
-  def caveats; <<-EOS.undent
-    x48 requires XQuartz/X11 to be installed,which can be done as:
-        brew cask install xquartz
-    or from:
-        http://xquartz.macosforge.org
-    EOS
-  end
+  # google.com is the official download host per the vendor homepage
+  url "https://sites.google.com/a/sharkus.com/sharkus-com/Home/x48-#{version}%20osx.zip"
+  name 'x48'
+  homepage 'http://blog.sharkus.com/2012/08/osx-hp48-emulators.html'
+  license :gpl
 
+  depends_on x11: true
+
+  app "x48-#{version} osx/x48.app"
 end

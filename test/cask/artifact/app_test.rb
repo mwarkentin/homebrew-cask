@@ -1,83 +1,295 @@
 require 'test_helper'
 
-describe Cask::Artifact::App do
+describe Hbc::Artifact::App do
   let(:local_caffeine) {
-    Cask.load('local-caffeine').tap do |cask|
+    Hbc.load('local-caffeine').tap do |cask|
       TestHelper.install_without_artifacts(cask)
     end
   }
 
-  describe 'install' do
-    it "links the noted applications to the proper directory" do
+  describe 'install_phase' do
+    it "installs the given apps using the proper target directory" do
       cask = local_caffeine
 
       shutup do
-        Cask::Artifact::App.new(cask).install
+        Hbc::Artifact::App.new(cask).install_phase
       end
 
-      TestHelper.valid_alias?(Cask.appdir/'Caffeine.app').must_equal true
+      File.ftype(Hbc.appdir.join('Caffeine.app')).must_equal 'directory'
+      File.exist?(cask.staged_path.join('Caffeine.app')).must_equal false
     end
 
     it "works with an application in a subdir" do
-      SubDirCask = Class.new(Cask)
-      SubDirCask.class_eval do
-        url TestHelper.local_binary('caffeine.zip')
+      subdir_cask = Hbc::Cask.new('subdir') do
+        url TestHelper.local_binary_url('caffeine.zip')
         homepage 'http://example.com/local-caffeine'
         version '1.2.3'
-        sha1 'd2fbdad1619934313026fc831e6c6e3dd97ac030'
-        link 'subdir/Caffeine.app'
+        sha256 '9203c30951f9aab41ac294bbeb1dcef7bed401ff0b353dcb34d68af32ea51853'
+        app 'subdir/Caffeine.app'
       end
 
-      subdir_cask = SubDirCask.new.tap do |cask|
-        TestHelper.install_without_artifacts(cask)
-      end
+      begin
+        TestHelper.install_without_artifacts(subdir_cask)
 
-      appsubdir = (subdir_cask.destination_path/'subdir').tap(&:mkpath)
-      FileUtils.mv((subdir_cask.destination_path/'Caffeine.app'), appsubdir)
+        appsubdir = subdir_cask.staged_path.join('subdir').tap(&:mkpath)
+        FileUtils.mv(subdir_cask.staged_path.join('Caffeine.app'), appsubdir)
+
+        shutup do
+          Hbc::Artifact::App.new(subdir_cask).install_phase
+        end
+
+        File.ftype(Hbc.appdir.join('Caffeine.app')).must_equal 'directory'
+        File.exist?(appsubdir.join('Caffeine.app')).must_equal false
+      ensure
+        if defined?(subdir_cask)
+          shutup do
+            Hbc::Installer.new(subdir_cask).uninstall
+          end
+        end
+      end
+    end
+
+    it "only uses apps when they are specified" do
+      cask = local_caffeine
+
+      staged_app_path = cask.staged_path.join('Caffeine.app')
+      staged_app_copy = staged_app_path.sub('Caffeine.app', 'CaffeineAgain.app')
+      FileUtils.cp_r staged_app_path, staged_app_copy
 
       shutup do
-        Cask::Artifact::App.new(subdir_cask).install
+        Hbc::Artifact::App.new(cask).install_phase
       end
 
-      TestHelper.valid_alias?(Cask.appdir/'Caffeine.app').must_equal true
+      File.ftype(Hbc.appdir.join('Caffeine.app')).must_equal 'directory'
+      File.exist?(staged_app_path).must_equal false
+
+      File.exist?(Hbc.appdir.join('CaffeineAgain.app')).must_equal false
+      File.exist?(cask.staged_path.join('CaffeineAgain.app')).must_equal true
     end
 
-    it "only uses linkables when they are specified" do
-      cask = local_caffeine
+    describe "when the target already exists" do
+      let(:target_path) {
+        target_path = Hbc.appdir.join('Caffeine.app')
+        target_path.mkpath
+        target_path
+      }
 
-      app_path = cask.destination_path.join('Caffeine.app')
-      FileUtils.cp_r app_path, app_path.sub('Caffeine.app', 'CaffeineAgain.app')
+      it "avoids clobbering an existing app" do
+        cask = local_caffeine
+
+        TestHelper.must_output(self, lambda {
+          Hbc::Artifact::App.new(cask).install_phase
+        }, "==> It seems there is already an App at '#{target_path}'; not moving.")
+
+        source_path = cask.staged_path.join('Caffeine.app')
+
+        File.identical?(source_path, target_path).must_equal false
+
+        contents_path = target_path.join('Contents/Info.plist')
+        File.exist?(contents_path).must_equal false
+      end
+
+      describe "given the force option" do
+        let(:install_phase) {
+          lambda { |given_options = {}|
+            options = { force: true }.merge(given_options)
+            Hbc::Artifact::App.new(local_caffeine, options).install_phase
+          }
+        }
+
+        let(:chmod_cmd) {
+          ['/bin/chmod', '-R', '--', 'u+rwx', target_path]
+        }
+
+        let(:chmod_n_cmd) {
+          ['/bin/chmod', '-R', '-N', target_path]
+        }
+
+        let(:chflags_cmd) {
+          ['/usr/bin/chflags', '-R', '--', '000', target_path]
+        }
+
+        before do
+          Hbc::Utils.stubs(current_user: 'fake_user')
+        end
+
+        describe "target is both writable and user-owned" do
+          it "overwrites the existing app" do
+            cask = local_caffeine
+
+            expected = [
+              "==> It seems there is already an App at '#{target_path}'; overwriting.",
+              "==> Removing App: '#{target_path}'",
+              "==> Moving App 'Caffeine.app' to '#{target_path}'"
+            ]
+            TestHelper.must_output(self, install_phase,
+              expected.join("\n"))
+
+            source_path = cask.staged_path.join('Caffeine.app')
+
+            File.exist?(source_path).must_equal false
+            File.ftype(target_path).must_equal 'directory'
+
+            contents_path = target_path.join('Contents/Info.plist')
+            File.exist?(contents_path).must_equal true
+          end
+        end
+
+        describe "target is user-owned but contains read-only files" do
+          before do
+            system '/usr/bin/touch', '--', "#{ target_path }/foo"
+            system '/bin/chmod', '--', '0555', target_path
+          end
+
+          it "tries to make the target world-writable" do
+            Hbc::FakeSystemCommand.expect_and_pass_through(chflags_cmd)
+            Hbc::FakeSystemCommand.expect_and_pass_through(chmod_cmd)
+            Hbc::FakeSystemCommand.expect_and_pass_through(chmod_n_cmd)
+            shutup do
+              install_phase.call(command: Hbc::FakeSystemCommand)
+            end
+          end
+
+          it "overwrites the existing app" do
+            cask = local_caffeine
+
+            expected = [
+              "==> It seems there is already an App at '#{target_path}'; overwriting.",
+              "==> Removing App: '#{target_path}'",
+              "==> Moving App 'Caffeine.app' to '#{target_path}'"
+            ]
+            TestHelper.must_output(self, install_phase,
+              expected.join("\n"))
+
+            source_path = cask.staged_path.join('Caffeine.app')
+
+            File.exist?(source_path).must_equal false
+            File.ftype(target_path).must_equal 'directory'
+
+            contents_path = target_path.join('Contents/Info.plist')
+            File.exist?(contents_path).must_equal true
+          end
+
+          after do
+            system '/bin/chmod', '--', '0755', target_path
+          end
+        end
+      end
+    end
+
+    describe "when the target is a broken symlink" do
+      let(:target_path) {
+        Hbc.appdir.join('Caffeine.app')
+      }
+
+      let(:deleted_path) {
+        local_caffeine.staged_path.join(
+          'Deleted.app')
+      }
+
+      before do
+        deleted_path.mkdir
+        File.symlink(deleted_path, target_path)
+        deleted_path.rmdir
+      end
+
+      it "leaves the target alone" do
+        cask = local_caffeine
+        TestHelper.must_output(self, lambda {
+          Hbc::Artifact::App.new(cask).install_phase
+        }, "==> It seems there is already an App at '#{target_path}'; not moving.")
+
+        File.symlink?(target_path).must_equal true
+      end
+
+      describe "given the force option" do
+        let(:install_phase) {
+          lambda {
+            Hbc::Artifact::App.new(
+              local_caffeine, force: true).install_phase
+          }
+        }
+
+        it "overwrites the existing app" do
+          cask = local_caffeine
+
+          expected = [
+            "==> It seems there is already an App at '#{target_path}'; overwriting.",
+            "==> Removing App: '#{target_path}'",
+            "==> Moving App 'Caffeine.app' to '#{target_path}'"
+          ]
+          TestHelper.must_output(self, install_phase,
+            expected.join("\n"))
+
+          source_path = cask.staged_path.join('Caffeine.app')
+
+          File.exist?(source_path).must_equal false
+          File.ftype(target_path).must_equal 'directory'
+
+          contents_path = target_path.join('Contents/Info.plist')
+          File.exist?(contents_path).must_equal true
+        end
+      end
+    end
+
+    it "gives a warning if the source doesn't exist" do
+      cask = local_caffeine
+      staged_app_path = cask.staged_path.join('Caffeine.app')
+      staged_app_path.rmtree
+
+      installation = -> { Hbc::Artifact::App.new(cask).install_phase }
+      message = "It seems the App source is not there: '#{staged_app_path}'"
+
+      error = installation.must_raise(Hbc::CaskError)
+      error.message.must_equal message
+    end
+  end
+
+  describe "uninstall_phase" do
+    it "deletes managed apps" do
+      cask = local_caffeine
 
       shutup do
-        Cask::Artifact::App.new(cask).install
+        Hbc::Artifact::App.new(cask).install_phase
+        Hbc::Artifact::App.new(cask).uninstall_phase
       end
 
-      TestHelper.valid_alias?(Cask.appdir/'Caffeine.app').must_equal true
-      TestHelper.valid_alias?(Cask.appdir/'CaffeineAgain.app').must_equal false
+      app_path = Hbc.appdir.join('Caffeine.app')
+      File.exist?(app_path).must_equal false
     end
+  end
 
-    it "avoids clobbering an existing app by linking over it" do
+  describe "summary" do
+    it "returns the correct english_description" do
       cask = local_caffeine
 
-      (Cask.appdir/'Caffeine.app').mkpath
+      description = Hbc::Artifact::App.new(cask).summary[:english_description]
 
-      TestHelper.must_output(self, lambda {
-        Cask::Artifact::App.new(cask).install
-      }, "==> It seems there is already an app at #{Cask.appdir.join('Caffeine.app')}; not linking.")
-
-      (Cask.appdir/'Caffeine.app').wont_be :symlink?
+      description.must_equal 'Apps managed by brew-cask:'
     end
 
-    it "happily clobbers an existing symlink" do
-      cask = local_caffeine
+    describe "app is correctly installed" do
+      it "returns the path to the app" do
+        cask = local_caffeine
+        shutup { Hbc::Artifact::App.new(cask).install_phase }
 
-      (Cask.appdir/'Caffeine.app').make_symlink('/tmp')
+        contents = Hbc::Artifact::App.new(cask).summary[:contents]
+        app_path = Hbc.appdir.join('Caffeine.app')
 
-      TestHelper.must_output(self, lambda {
-        Cask::Artifact::App.new(cask).install
-      }, "==> Linking Caffeine.app to #{Cask.appdir.join('Caffeine.app')}")
+        contents.must_equal ["'#{app_path}'"]
+      end
+    end
 
-      File.readlink(Cask.appdir/'Caffeine.app').wont_equal '/tmp'
+    describe "app is missing" do
+      it "returns a warning and the supposed path to the app" do
+        cask = local_caffeine
+
+        contents = Hbc::Artifact::App.new(cask).summary[:contents]
+        app_path = Hbc.appdir.join('Caffeine.app')
+
+        contents.size.must_equal 1
+        contents[0].must_match(/.*Missing App.*: '#{app_path}'/)
+      end
     end
   end
 end

@@ -1,7 +1,11 @@
-class VineServer < Cask
-  homepage 'http://www.testplant.com/products/vine/vine-server/'
-  url 'http://www.testplant.com/downloads/Vine/VineServer4.01.dmg'
+cask 'vine-server' do
   version '4.01'
-  sha1 '6d2d3c441147d1eab2ff76d327d5a5e55aa56ba1'
-  link 'Vine Server.app'
+  sha256 '10e32d9594614b5169261b5b9bbeadb6f5adf2cc1c4bf2fdce68be3ccd7ca4a9'
+
+  url "http://www.testplant.com/downloads/Vine/VineServer#{version}.dmg"
+  name 'Vine Server'
+  homepage 'http://www.testplant.com/products/vine/vine-server/'
+  license :unknown # TODO: change license and remove this comment; ':unknown' is a machine-generated placeholder
+
+  app 'Vine Server.app'
 end

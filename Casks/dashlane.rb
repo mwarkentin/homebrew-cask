@@ -1,7 +1,11 @@
-class Dashlane < Cask
-  url 'https://d3mfqat9ni8wb5.cloudfront.net/releases/2.2.5/2.2.5.48458/Dashlane.dmg'
+cask 'dashlane' do
+  version :latest
+  sha256 :no_check
+
+  url 'https://www.dashlane.com/directdownload?platform=mac'
+  name 'Dashlane'
   homepage 'https://www.dashlane.com/'
-  version '2.2.5.48458'
-  sha1 '41ee013236979b7fc017900245e16654dbac5d74'
-  link 'Dashlane.app'
+  license :unknown # TODO: change license and remove this comment; ':unknown' is a machine-generated placeholder
+
+  app 'Dashlane.app'
 end

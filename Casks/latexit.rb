@@ -1,7 +1,15 @@
-class Latexit < Cask
-  url 'http://www.chachatelier.fr/latexit/downloads/LaTeXiT-2_5_4.dmg'
+cask 'latexit' do
+  version '2.8.0'
+  sha256 '74258cbf8673ef17fb6ce8fbfdc630ea98002fb2a7012c251429299cf9b68489'
+
+  url "http://www.chachatelier.fr/latexit/downloads/LaTeXiT-#{version.gsub('.', '_')}.dmg"
+  appcast 'http://pierre.chachatelier.fr/latexit/downloads/latexit-sparkle-en.rss',
+          checkpoint: 'b2acb7c6fa3a029c8711308da5b2bc6835fb878cfa1ec374159c4d7e2e69f3f2'
+  name 'LaTeXiT'
   homepage 'http://www.chachatelier.fr/latexit'
-  version '2.5.4'
-  sha1 '22476d78ba17cc50b8ffc4b5ca2601a1b6099bac'
-  link 'LaTeXiT.app'
+  license :oss
+
+  app 'LaTeXiT.app'
+
+  zap delete: '~/Library/Preferences/fr.chachatelier.pierre.LaTeXiT.plist'
 end

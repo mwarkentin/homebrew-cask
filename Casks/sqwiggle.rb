@@ -1,7 +1,11 @@
-class Sqwiggle < Cask
+cask 'sqwiggle' do
+  version :latest
+  sha256 :no_check
+
   url 'https://www.sqwiggle.com/download/mac'
+  name 'Sqwiggle'
   homepage 'https://www.sqwiggle.com'
-  version 'latest'
-  no_checksum
-  link 'Sqwiggle.app'
+  license :gratis
+
+  app 'Sqwiggle.app'
 end

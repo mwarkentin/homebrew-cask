@@ -1,7 +1,11 @@
-class Camtasia < Cask
+cask 'camtasia' do
+  version :latest
+  sha256 :no_check
+
   url 'http://download.techsmith.com/camtasiamac/enu/Camtasia.dmg'
-  homepage 'http://www.techsmith.com/camtasia.html'
-  version 'latest'
-  no_checksum
-  link 'Camtasia 2.app'
+  name 'Camtasia'
+  homepage 'https://www.techsmith.com/camtasia.html'
+  license :commercial
+
+  app 'Camtasia 2.app'
 end

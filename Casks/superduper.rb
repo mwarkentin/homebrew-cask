@@ -1,7 +1,13 @@
-class Superduper < Cask
-  url 'http://www.shirt-pocket.com/downloads/SuperDuper!.dmg'
+cask 'superduper' do
+  version :latest
+  sha256 :no_check
+
+  url 'https://s3.amazonaws.com/shirtpocket/SuperDuper/SuperDuper!.dmg'
+  name 'SuperDuper!'
   homepage 'http://www.shirt-pocket.com/SuperDuper/SuperDuperDescription.html'
-  version '2.7.1'
-  sha1 'e230b5eed468347d94377e23e666c075e03a8c79'
-  link 'SuperDuper!.app'
+  license :freemium
+
+  app 'SuperDuper!.app'
+
+  zap delete: '~/Library/Application Support/SuperDuper!'
 end

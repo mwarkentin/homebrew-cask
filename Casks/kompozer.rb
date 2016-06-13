@@ -1,7 +1,12 @@
-class Kompozer < Cask
-  url 'http://downloads.sourceforge.net/project/kompozer/current/0.8b3/macosx/kompozer-0.8b3.en-US.mac-universal.dmg'
-  homepage 'http://www.kompozer.net/'
+cask 'kompozer' do
   version '0.8b3'
-  sha1 '913dedc4b575078c23577ff34c5fa53e1b5b985b'
-  link 'KompoZer.app'
+  sha256 '415e019c9b3ec1c76465bf4f561fa515f403e57ac6f92c76365d902241dc14ed'
+
+  # sourceforge.net is the official download host per the vendor homepage
+  url "http://downloads.sourceforge.net/project/kompozer/current/#{version}/macosx/kompozer-#{version}.en-US.mac-universal.dmg"
+  name 'KompoZer'
+  homepage 'http://www.kompozer.net/'
+  license :oss
+
+  app 'KompoZer.app'
 end

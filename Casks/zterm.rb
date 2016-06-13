@@ -1,7 +1,11 @@
-class Zterm < Cask
-  url 'http://www.dalverson.com/zterm/ZTerm1.2.dmg'
-  homepage 'http://www.dalverson.com/zterm/'
+cask 'zterm' do
   version '1.2'
-  sha1 '7d350dac27eaa7f39d676f933e64515d55bc3844'
-  link 'ZTerm.app'
+  sha256 '711b1e4322970d2ece65ab5d51e18f2e634c2f43847db9a7a98e4326e1b8217c'
+
+  url "http://www.dalverson.com/zterm/ZTerm#{version}.dmg"
+  name 'ZTerm'
+  homepage 'http://www.dalverson.com/zterm/'
+  license :unknown # TODO: change license and remove this comment; ':unknown' is a machine-generated placeholder
+
+  app 'ZTerm.app'
 end

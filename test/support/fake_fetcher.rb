@@ -1,5 +1,5 @@
-class Cask::FakeFetcher
-  def self.fake_response_for(url, response) 
+class Hbc::FakeFetcher
+  def self.fake_response_for(url, response)
     @responses[url] = response
   end
 
@@ -23,12 +23,12 @@ end
 module FakeFetcherHooks
   def before_setup
     super
-    Cask::FakeFetcher.init
+    Hbc::FakeFetcher.init
   end
 
   def after_teardown
     super
-    Cask::FakeFetcher.clear
+    Hbc::FakeFetcher.clear
   end
 end
 

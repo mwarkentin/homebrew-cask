@@ -1,7 +1,17 @@
-class Filebot < Cask
-  url 'http://downloads.sourceforge.net/project/filebot/filebot/FileBot_3.62/FileBot_3.62.app.tar.gz'
-  homepage 'http://www.filebot.net/'
-  version '3.62'
-  sha1 'e9e2fbec731ca4d033c6c5e7e6d68bb2039491eb'
-  link 'FileBot.app'
+cask 'filebot' do
+  version '4.7'
+  sha256 '4f61524ccbfa1be65e3818ba37d983599af67af32cc2dcfd4c8f45d74b394cb2'
+
+  # sourceforge.net/project/filebot was verified as official when first introduced to the cask
+  url "http://downloads.sourceforge.net/project/filebot/filebot/FileBot_#{version}/FileBot_#{version}-brew.tar.bz2"
+  name 'FileBot'
+  homepage 'https://www.filebot.net/'
+  license :gpl
+
+  app 'FileBot.app'
+  binary "#{appdir}/FileBot.app/Contents/MacOS/filebot.sh", target: 'filebot'
+
+  caveats do
+    depends_on_java('8')
+  end
 end

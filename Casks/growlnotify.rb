@@ -1,7 +1,14 @@
-class Growlnotify < Cask
-  url 'http://growl.cachefly.net/GrowlNotify-2.1.zip'
-  homepage 'http://growl.info/downloads'
+cask 'growlnotify' do
   version '2.1'
-  sha1 '7880af1e9e6b1fff1174afe39eeeb59e25cf2674'
-  install 'GrowlNotify.pkg'
+  sha256 'eec601488b19c9e9b9cb7f0081638436518bce782d079f6e43ddc195727c04ca'
+
+  # growl.cachefly.net was verified as official when first introduced to the cask
+  url "https://growl.cachefly.net/GrowlNotify-#{version}.zip"
+  name 'GrowlNotify'
+  homepage 'http://growl.info/downloads'
+  license :bsd
+
+  pkg 'GrowlNotify.pkg'
+
+  uninstall pkgutil: 'info.growl.growlnotify.*pkg'
 end

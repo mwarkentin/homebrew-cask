@@ -1,7 +1,14 @@
-class Shimo < Cask
-  url 'http://www.chungwasoft.com/files/Shimo_3.2.3_2587.zip'
-  homepage 'http://www.chungwasoft.com/shimo/'
-  version '3.2.3_2587'
-  sha1 '34414b64fd1d138dc05350f56c15ceea310b4fb2'
-  link 'Shimo.app'
+cask 'shimo' do
+  version '4.1_8209'
+  sha256 '6b2183851540a31fcbf9c887c90195ed08eaa2ed76d23a5cfd8294d8f2499dd8'
+
+  # shimo.s3.amazonaws.com was verified as official when first introduced to the cask
+  url "https://shimo.s3.amazonaws.com/Shimo_#{version}.zip"
+  name 'Shimo'
+  homepage 'https://www.feingeist.io/shimo/'
+  license :commercial
+
+  auto_updates true
+
+  app 'Shimo.app'
 end

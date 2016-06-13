@@ -1,7 +1,24 @@
-class Qqbrowser < Cask
-  url 'http://dl_dir.qq.com/invc/tt/QQBrowser_1.5.0.2311.dmg'
+cask 'qqbrowser' do
+  version :latest
+  sha256 :no_check
+
+  url 'http://dldir1.qq.com/invc/tt/QQBrowser_for_Mac.dmg'
+  name 'QQ浏览器'
   homepage 'http://browser.qq.com/mac/'
-  version '1.5.0.2311'
-  sha1 '0b390037a045e0ea6b0105d2ace1c40f854106ac'
-  link 'QQBrowser.app'
+  license :commercial
+
+  app 'QQBrowser.app'
+
+  uninstall quit: 'com.tencent.QQBrowser'
+
+  zap delete: [
+                '~/Library/Application Support/QQBrowser2',
+                '~/Library/Caches/com.tencent.QQBrowser',
+                '~/Library/Caches/com.tencent.QQBrowser.helper',
+                '~/Library/Caches/QQBrowser2',
+                '~/Library/Preferences/com.tencent.QQBrowser.helper.EH.plist',
+                '~/Library/Preferences/com.tencent.QQBrowser.helper.plist',
+                '~/Library/Preferences/com.tencent.QQBrowser.plist',
+                '~/Library/Saved Application State/com.tencent.QQBrowser.savedState',
+              ]
 end

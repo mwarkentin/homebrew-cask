@@ -1,7 +1,27 @@
-class Colloquy < Cask
-  url 'http://colloquy.info/downloads/colloquy-2.4.2.zip'
+cask 'colloquy' do
+  version '2.4.3'
+  sha256 'b1c54047b9a4aed313e9a4a86073aa5b1215cb8a4ea462c59e7a52d8be6b1a93'
+
+  url "http://colloquy.info/downloads/colloquy-#{version}.zip"
+  appcast 'http://colloquy.info/update.php?rss',
+          checkpoint: '91009856ce35364f86861d42e3f06d6603648914ef374997cde0a28f860ae52f'
+  name 'Colloquy'
   homepage 'http://colloquy.info/'
-  version '2.4.2'
-  sha1 '19892476af32f83685a37af16676b0098ad3bacc'
-  link 'Colloquy.app'
+  license :gpl
+
+  auto_updates true
+
+  app 'Colloquy.app'
+
+  postflight do
+    suppress_move_to_applications
+  end
+
+  zap delete: [
+                '~/Library/Application Support/Colloquy',
+                '~/Library/Caches/info.colloquy',
+                '~/Library/Preferences/info.colloquy.plist',
+                '~/Library/Saved Application State/info.colloquy.savedState',
+                '~/Library/Scripts/Applications/Colloquy',
+              ]
 end

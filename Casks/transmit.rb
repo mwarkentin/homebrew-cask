@@ -1,7 +1,16 @@
-class Transmit < Cask
-  url 'http://www.panic.com/transmit/d/Transmit%204.4.5.zip'
-  homepage 'http://panic.com/transmit'
-  version '4.4.5'
-  sha1 '4ca598fddf535d9a255ae348a0367399b5eb0b7d'
-  link 'Transmit.app'
+cask 'transmit' do
+  version '4.4.10'
+  sha256 '9255bff3e337d5c93e867a553d3889cf97aeecae70304f468648384b1990a257'
+
+  url "https://www.panic.com/transmit/d/Transmit%20#{version}.zip"
+  name 'Transmit'
+  homepage 'https://panic.com/transmit'
+  license :commercial
+
+  app 'Transmit.app'
+
+  zap delete: [
+                '~/Library/Preferences/com.panic.Transmit.plist',
+                '~/Library/Application Support/Transmit',
+              ]
 end
